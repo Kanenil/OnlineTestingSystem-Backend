@@ -20,6 +20,9 @@ namespace OnlineTestingSystem.Presistence
                     configuration.GetConnectionString("OnlineTestingConnectionString")));
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<ICoursesRepository, CoursesRepository>();
 
             return services;
         }

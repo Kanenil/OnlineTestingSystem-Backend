@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OnlineTestingSystem.Domain;
 using OnlineTestingSystem.Domain.Identity;
 using System;
 using System.Collections.Generic;
@@ -37,5 +38,7 @@ namespace OnlineTestingSystem.Presistence
                     .IsRequired();
             });
         }
+
+        public DbSet<CourseEntity> Courses { get; set; }
     }
 }

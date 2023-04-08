@@ -1,4 +1,5 @@
-﻿using OnlineTestingSystem.Application.Contracts.Persistence;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineTestingSystem.Application.Contracts.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,36 @@ namespace OnlineTestingSystem.Presistence.Repositories
             _dbContext = dbContext;
         }
 
-        public Task<T> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _dbContext.AddAsync(entity);
+            return entity;
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Remove(entity);
         }
 
-        public Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await GetAsync(id);
+            return entity != null;
         }
 
-        public Task<IReadOnlyList<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public Task<T> GetAsync(int id)
+        public async Task<T> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
     }
 }

@@ -14,13 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Features\model\Handlers\Commands\" />
-    <Folder Include="Features\model\Handlers\Queries\" />
-    <Folder Include="Features\model\Requests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OnlineTestingSystem.Domain\OnlineTestingSystem.Domain.csproj" />
   </ItemGroup>
 
