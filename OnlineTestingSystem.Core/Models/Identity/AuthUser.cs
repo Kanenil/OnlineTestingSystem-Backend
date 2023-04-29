@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace OnlineTestingSystem.Application.Models.Identity
 {
-    public class AuthResponse
+    public class AuthUser
     {
-        public string Token { get; set; }
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string? Image { get; set; }
     }
 }

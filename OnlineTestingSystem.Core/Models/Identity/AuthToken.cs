@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace OnlineTestingSystem.Application.Models.Identity
 {
-    public class AuthResponse
+    public class AuthToken
     {
         public string Token { get; set; }
+        public DateTime Expires { get; set; }
     }
 }

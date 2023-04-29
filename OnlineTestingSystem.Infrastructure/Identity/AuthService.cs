@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json.Linq;
+using OnlineTestingSystem.Application.Constants;
 using OnlineTestingSystem.Application.Contracts.Identity;
 using OnlineTestingSystem.Application.Contracts.Infrastructure;
 using OnlineTestingSystem.Application.Models.Identity;
@@ -45,16 +47,13 @@ namespace OnlineTestingSystem.Infrastructure.Identity
 
             AuthResponse response = new()
             {
-                Id = user.Id,
                 Token = token,
-                Email = user.Email,
-                UserName = user.UserName
             };
 
             return response;
         }
 
-        public async Task<RegistrationResponse> Register(RegistrationRequest request)
+        public async Task<AuthResponse> Register(RegistrationRequest request)
         {
             var existingUser = await _userManager.FindByNameAsync(request.UserName);
 
@@ -81,7 +80,15 @@ namespace OnlineTestingSystem.Infrastructure.Identity
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "User");
-                    return new RegistrationResponse() { UserId = user.Id };
+
+                    var token = await _jwtTokenService.CreateTokenAsync(user);
+
+                    AuthResponse response = new()
+                    {
+                        Token = token,
+                    };
+
+                    return response;
                 }
                 else
                 {

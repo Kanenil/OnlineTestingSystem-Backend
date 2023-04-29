@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineTestingSystem.Application.Models.Identity
+namespace OnlineTestingSystem.Application.Constants
 {
-    public class AuthResponse
+    public static class Token
     {
-        public string Token { get; set; }
+        public const int Life = 10;
     }
 }

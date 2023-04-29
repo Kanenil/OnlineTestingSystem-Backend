@@ -23,7 +23,7 @@ namespace OnlineTestingSystem.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+        public async Task<ActionResult<AuthResponse>> Register(RegistrationRequest request)
         {
             return Ok(await _authenticationService.Register(request));
         }

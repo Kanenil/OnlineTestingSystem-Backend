@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OnlineTestingSystem.Application.Constants;
 using OnlineTestingSystem.Application.Contracts.Infrastructure;
 using OnlineTestingSystem.Domain.Identity;
 using System;
@@ -44,7 +45,7 @@ namespace OnlineTestingSystem.Infrastructure.JwtToken
 
             var jwt = new JwtSecurityToken(
                 signingCredentials: signinCredentials,
-                expires: DateTime.Now.AddDays(10),
+                expires: DateTime.Now.AddDays(Token.Life),
                 claims: claims
             );
             return new JwtSecurityTokenHandler().WriteToken(jwt);
