@@ -1,26 +1,27 @@
 import {Injectable, OnInit} from '@angular/core';
 import {GlobalConstants} from "../GlobalConstants";
 import {BehaviorSubject} from "rxjs";
+import {LocalStorageService} from "./local-storage.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ThemesService implements OnInit {
-  isDarkEnable = false
-  presentTheme$ = new BehaviorSubject<string>('');
+export class ThemesService {
+  isDarkEnable = true
 
-  ngOnInit() {
-    const savedTheme = localStorage.getItem(GlobalConstants.darkMode);
-    if (savedTheme) {
-      this.presentTheme$.next(savedTheme);
-    }
+  constructor(private localStore: LocalStorageService) {
+  }
+
+  initTheme() {
+    const savedTheme = this.localStore.getData(GlobalConstants.darkMode);
+    this.isDarkEnable = savedTheme?true:false
   }
 
   changeTheme() {
-    this.presentTheme$.value === ''
-      ? this.presentTheme$.next('dark')
-      : this.presentTheme$.next('');
-    localStorage.setItem(GlobalConstants.darkMode, this.presentTheme$.value);
+    if (!this.isDarkEnable)
+      this.localStore.saveData(GlobalConstants.darkMode, 'dark');
+    else
+      this.localStore.removeData(GlobalConstants.darkMode)
     this.isDarkEnable = !this.isDarkEnable;
   }
 }

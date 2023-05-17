@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {ICourse} from "../../../models/course";
 
 @Component({
   selector: 'app-courses-list',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./courses-list.component.scss']
 })
 export class CoursesListComponent {
-
+  @Input() courses: ICourse[];
 }

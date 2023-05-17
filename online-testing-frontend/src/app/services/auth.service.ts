@@ -6,6 +6,7 @@ import {environment} from "../../environments/environment";
 import {LocalStorageService} from "./local-storage.service";
 import jwt_decode from 'jwt-decode';
 import {ErrorService} from "./error.service";
+import {GlobalConstants} from "../GlobalConstants";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AuthService {
   }
 
   login(email: string, password: string):Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`${environment.apiUrl}/account/login`, {email,password})
+    return this.http.post<IAuthResponse>(`${environment.apiUrl}${GlobalConstants.routes.login}`, {email,password})
       .pipe(
         tap(resp=>{
           console.log(resp)
@@ -36,7 +37,7 @@ export class AuthService {
   }
 
   register(model: IRegisterUser):Observable<IAuthResponse> {
-    return this.http.post<IAuthResponse>(`${environment.apiUrl}/account/register`, model)
+    return this.http.post<IAuthResponse>(`${environment.apiUrl}${GlobalConstants.routes.register}`, model)
       .pipe(
         tap(resp=>{
           console.log(resp)

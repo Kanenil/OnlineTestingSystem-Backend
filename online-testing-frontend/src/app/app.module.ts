@@ -15,6 +15,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { InputGroupComponent } from './components/forms/input-group/input-group.component';
 import { ProfileMenuComponent } from './components/header/profile-menu/profile-menu.component';
 import { CoursesListComponent } from './components/courses/courses-list/courses-list.component';
+import { CourseComponent } from './components/courses/course/course.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CoursesListComponent } from './components/courses/courses-list/courses-
     InputGroupComponent,
     ProfileMenuComponent,
     CoursesListComponent,
+    CourseComponent,
   ],
   imports: [
     BrowserModule,

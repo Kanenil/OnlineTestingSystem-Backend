@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {CoursesService} from "../../services/courses.service";
 
 @Component({
   selector: 'app-home-page',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
+
+  isLoading = false
+
+  constructor(public coursesService: CoursesService) {
+    this.isLoading = true
+    coursesService.getAll().subscribe(()=>{
+      this.isLoading = false
+    })
+  }
 
 }
