@@ -1,0 +1,145 @@
+<nav class="bg-white border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex">
+        <div class="flex-shrink-0 flex items-center">
+          <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+               alt="Workflow">
+          <img class="hidden lg:block h-8 w-auto"
+               src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg" alt="Workflow">
+        </div>
+        <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+
+          <a routerLink=""
+             [routerLinkActiveOptions]={exact:true}
+             routerLinkActive="border-indigo-500 hover:border-indigo-500 text-gray-900"
+             class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+            Home
+          </a>
+
+        </div>
+      </div>
+      <div class="hidden sm:ml-6 sm:flex sm:items-center">
+
+        <div *ngIf="!authService.user" class="md:flex items-center justify-end md:flex-1 lg:w-0">
+          <a routerLink="login" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"> Sign
+            in </a>
+          <a routerLink="register"
+             class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+            Sign up </a>
+        </div>
+
+        <button *ngIf="authService.user" type="button"
+                class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <span class="sr-only">View notifications</span>
+
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+               aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </button>
+
+
+        <div *ngIf="authService.user" class="ml-3 relative">
+          <div>
+            <button (click)="profileMenu.togglePopup()" type="button"
+                    class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+              <img *ngIf="authService.user.image" class="h-8 w-8 rounded-full" src="{{authService.user.image}}" alt="">
+              <div *ngIf="!authService.user.image"
+                   class="h-8 w-8 rounded-full bg-blue-600 flex justify-center items-center">
+                <span class="font-bold text-white">{{authService.user.email.substring(0, 1) | uppercase}}</span>
+              </div>
+            </button>
+          </div>
+
+
+          <app-profile-menu [authService]="authService" #profileMenu></app-profile-menu>
+        </div>
+      </div>
+      <div class="-mr-2 flex items-center sm:hidden">
+
+        <button type="button"
+                (click)="isOpenedMobileMenu = !isOpenedMobileMenu"
+                class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                aria-controls="mobile-menu" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+
+          <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+
+          <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu, show/hide based on menu state. -->
+  <div *ngIf="isOpenedMobileMenu" class="sm:hidden" id="mobile-menu">
+    <div class="pt-2 pb-3 space-y-1">
+
+      <a routerLink=""
+         [routerLinkActiveOptions]={exact:true}
+         routerLinkActive="bg-indigo-50 border-indigo-600 text-indigo-700"
+         class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block border-l-4 pl-3 pr-4 py-2 text-base font-medium">
+        Home
+      </a>
+
+      <a *ngIf="!authService.user" routerLink="login"
+         [routerLinkActiveOptions]={exact:true}
+         routerLinkActive="bg-indigo-50 border-indigo-600 text-indigo-700"
+         class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block border-l-4 pl-3 pr-4 py-2 text-base font-medium">
+        Login
+      </a>
+
+      <a *ngIf="!authService.user" routerLink="register"
+         [routerLinkActiveOptions]={exact:true}
+         routerLinkActive="bg-indigo-50 border-indigo-600 text-indigo-700"
+         class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block border-l-4 pl-3 pr-4 py-2 text-base font-medium">
+        Register
+      </a>
+
+
+    </div>
+    <div *ngIf="authService.user" class="pt-4 pb-3 border-t border-gray-200">
+      <div class="flex items-center px-4">
+        <div class="flex-shrink-0">
+          <img *ngIf="authService.user.image" class="h-10 w-10 rounded-full" src="{{authService.user.image}}" alt="">
+          <div *ngIf="!authService.user.image"
+               class="h-10 w-10 rounded-full bg-blue-600 flex justify-center items-center">
+            <span class="font-bold text-white">{{authService.user.email.substring(0, 1) | uppercase}}</span>
+          </div>
+        </div>
+        <div class="ml-3">
+          <div class="text-sm font-medium text-gray-500">{{authService.user.email}}</div>
+        </div>
+        <button type="button"
+                class="ml-auto bg-white flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <span class="sr-only">View notifications</span>
+          <!-- Heroicon name: outline/bell -->
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+               aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </button>
+      </div>
+      <div class="mt-3 space-y-1">
+        <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+          Profile </a>
+
+        <button (click)="authService.logout()"
+                class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"> Sign
+          out
+        </button>
+      </div>
+    </div>
+  </div>
+
+</nav>
