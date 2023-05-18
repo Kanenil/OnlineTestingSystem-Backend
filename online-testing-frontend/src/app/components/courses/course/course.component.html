@@ -1,1 +1,19 @@
-<p>course works!</p>
+<div class="transition animate-scaleIn group relative bg-white dark:bg-gray-700 border border-gray-200 rounded-lg flex flex-col overflow-hidden dark:border-gray-600">
+  <div class="flex items-end justify-center aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-56 dark:bg-gray-700">
+    <img *ngIf="course.image"
+         [src]="course.image"
+         [alt]="course.name"
+         class="w-full h-full object-center object-cover sm:w-full sm:h-full">
+    <div class="absolute bg-gray-500 bg-opacity-50 w-full flex items-center justify-center content-center">
+      <h1 class="text-4xl font-bold text-gray-200">{{course.name | slice:0:10 }}</h1>
+    </div>
+
+  </div>
+  <div *ngIf="course.section || course.description" class="flex-1 p-4 space-y-2 flex flex-col">
+    <p class="text-sm text-gray-500">{{course.section}}</p>
+    <p class="text-sm text-gray-500">{{course.description}}</p>
+  </div>
+  <a [routerLink]="['courses', course.id]">
+    <span aria-hidden="true" class="absolute inset-0"></span>
+  </a>
+</div>

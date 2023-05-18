@@ -1,19 +1,22 @@
-<nav class="bg-white dark:bg-gray-600 border-b border-gray-200">
+<nav class="bg-white dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
       <div class="flex">
         <div class="flex-shrink-0 flex items-center">
-          <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-               alt="Workflow">
-          <img class="hidden lg:block h-8 w-auto"
-               src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg" alt="Workflow">
+          <a routerLink="/">
+            <img class="block lg:hidden h-8 w-auto" src="/assets/small-logo.svg"
+                 alt="Workflow">
+            <img *ngIf="!themesService.isDarkEnable" class="hidden lg:block h-10 w-auto"
+                 src="/assets/logo.svg" alt="Workflow">
+            <img *ngIf="themesService.isDarkEnable" class="hidden lg:block h-10 w-auto"
+                 src="/assets/dark-logo.svg" alt="Workflow">
+          </a>
         </div>
         <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
 
-          <a routerLink=""
-             [routerLinkActiveOptions]={exact:true}
-             routerLinkActive="border-indigo-500 hover:border-indigo-500 text-gray-900"
-             class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+          <a routerLink="/"
+             routerLinkActive="border-primary-400 hover:border-primary-300 text-gray-900 dark:text-white dark:border-primary-500 dark:hover:border-primary-400"
+             class="transition animate-opacity border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
             Home
           </a>
 
@@ -21,45 +24,37 @@
       </div>
       <div class="hidden sm:ml-6 sm:flex sm:items-center">
 
-        <div class="ml-4">
-          <button id="header__sun" (click)="themesService.changeTheme()" *ngIf="themesService.isDarkEnable"  title="Switch to light mode" class="relative w-10 h-10 focus:outline-none focus:shadow-outline text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-sun" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path>
-            </svg>
-          </button>
-          <button id="header__moon" (click)="themesService.changeTheme()" *ngIf="!themesService.isDarkEnable"  title="Switch to dark mode" class="relative w-10 h-10 focus:outline-none focus:shadow-outline text-gray-500">
-            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z" />
-            </svg>
-          </button>
+        <div class="mr-2">
+          <app-theme-switcher [themesService]="themesService"></app-theme-switcher>
         </div>
 
-        <div *ngIf="!authService.user" class="md:flex items-center justify-end">
-          <a routerLink="login" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"> Sign
+        <div *ngIf="!authService.user" class="sm:hidden items-center justify-end">
+          <a routerLink="login"
+             class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            Sign
             in </a>
           <a routerLink="register"
-             class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+             class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-500 hover:bg-primary-600 active:bg-primary-700">
             Sign up </a>
         </div>
 
-        <button *ngIf="authService.user" type="button"
-                class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          <span class="sr-only">View notifications</span>
+        <div *ngIf="!authService.user" class="md:flex items-center justify-end">
+          <button
+            (click)="showLoginModal()"
+             class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            Sign
+            in </button>
+          <button
+             class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-500 hover:bg-primary-600 active:bg-primary-700">
+            Sign up </button>
+        </div>
 
-          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-               aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-          </svg>
-        </button>
-
+        <app-notification [authService]="authService"></app-notification>
 
         <div *ngIf="authService.user" class="ml-3 relative">
           <div>
             <button (click)="profileMenu.togglePopup()" type="button"
-                    class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:bg-gray-700"
                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <img *ngIf="authService.user.image" class="h-8 w-8 rounded-full" src="{{authService.user.image}}" alt="">
               <div *ngIf="!authService.user.image"
@@ -68,18 +63,15 @@
               </div>
             </button>
           </div>
-
-
           <app-profile-menu [authService]="authService" #profileMenu></app-profile-menu>
         </div>
       </div>
       <div class="-mr-2 flex items-center sm:hidden">
-
+        <app-theme-switcher [themesService]="themesService" class="mr-2"></app-theme-switcher>
         <button type="button"
-                (click)="isOpenedMobileMenu = !isOpenedMobileMenu"
-                class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                (click)="mobileMenu.togglePopup()"
+                class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-gray-300 hover:dark:text-white"
                 aria-controls="mobile-menu" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
 
           <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                stroke="currentColor" aria-hidden="true">
@@ -95,66 +87,6 @@
     </div>
   </div>
 
-  <!-- Mobile menu, show/hide based on menu state. -->
-  <div *ngIf="isOpenedMobileMenu" class="sm:hidden" id="mobile-menu">
-    <div class="pt-2 pb-3 space-y-1">
 
-      <a routerLink=""
-         [routerLinkActiveOptions]={exact:true}
-         routerLinkActive="bg-indigo-50 border-indigo-600 text-indigo-700"
-         class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block border-l-4 pl-3 pr-4 py-2 text-base font-medium">
-        Home
-      </a>
-
-      <a *ngIf="!authService.user" routerLink="login"
-         [routerLinkActiveOptions]={exact:true}
-         routerLinkActive="bg-indigo-50 border-indigo-600 text-indigo-700"
-         class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block border-l-4 pl-3 pr-4 py-2 text-base font-medium">
-        Login
-      </a>
-
-      <a *ngIf="!authService.user" routerLink="register"
-         [routerLinkActiveOptions]={exact:true}
-         routerLinkActive="bg-indigo-50 border-indigo-600 text-indigo-700"
-         class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block border-l-4 pl-3 pr-4 py-2 text-base font-medium">
-        Register
-      </a>
-
-
-    </div>
-    <div *ngIf="authService.user" class="pt-4 pb-3 border-t border-gray-200">
-      <div class="flex items-center px-4">
-        <div class="flex-shrink-0">
-          <img *ngIf="authService.user.image" class="h-10 w-10 rounded-full" src="{{authService.user.image}}" alt="">
-          <div *ngIf="!authService.user.image"
-               class="h-10 w-10 rounded-full bg-blue-600 flex justify-center items-center">
-            <span class="font-bold text-white">{{authService.user.email.substring(0, 1) | uppercase}}</span>
-          </div>
-        </div>
-        <div class="ml-3">
-          <div class="text-sm font-medium text-gray-500">{{authService.user.email}}</div>
-        </div>
-        <button type="button"
-                class="ml-auto bg-white flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          <span class="sr-only">View notifications</span>
-          <!-- Heroicon name: outline/bell -->
-          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-               aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-          </svg>
-        </button>
-      </div>
-      <div class="mt-3 space-y-1">
-        <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-          Profile </a>
-
-        <button (click)="authService.logout()"
-                class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"> Sign
-          out
-        </button>
-      </div>
-    </div>
-  </div>
-
+  <app-mobile-menu [authService]="authService" #mobileMenu></app-mobile-menu>
 </nav>

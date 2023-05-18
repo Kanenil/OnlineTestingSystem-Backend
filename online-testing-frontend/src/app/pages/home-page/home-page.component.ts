@@ -7,14 +7,14 @@ import {CoursesService} from "../../services/courses.service";
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
-
   isLoading = false
 
   constructor(public coursesService: CoursesService) {
-    this.isLoading = true
-    coursesService.getAll().subscribe(()=>{
-      this.isLoading = false
-    })
+    if(!coursesService.courses.length) {
+      this.isLoading = true
+      coursesService.getAll().subscribe(()=>{
+        this.isLoading = false
+      })
+    }
   }
-
 }

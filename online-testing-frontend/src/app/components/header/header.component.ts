@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {ThemesService} from "../../services/themes.service";
+import {ModalService} from "../../services/modal.service";
+import {LoginModalComponent} from "../modals/login-modal/login-modal.component";
 
 @Component({
   selector: 'app-header',
@@ -8,13 +10,13 @@ import {ThemesService} from "../../services/themes.service";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  isOpenedMobileMenu = false;
+  constructor(
+    public authService: AuthService,
+    public themesService: ThemesService,
+    private modalService: ModalService
+  ) {}
 
-
-
-  constructor(public authService: AuthService, public themesService: ThemesService) {
-
+  showLoginModal() {
+    this.modalService.show(LoginModalComponent);
   }
-
-
 }
