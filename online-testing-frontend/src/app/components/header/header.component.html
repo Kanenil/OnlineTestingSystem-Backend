@@ -15,7 +15,7 @@
         <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
 
           <a routerLink="/"
-             routerLinkActive="border-primary-400 hover:border-primary-300 text-gray-900 dark:text-white dark:border-primary-500 dark:hover:border-primary-400"
+             routerLinkActive="border-primary-400 hover:border-primary-500 text-gray-900 dark:text-white dark:border-primary-500 dark:hover:border-primary-400"
              class="transition animate-opacity border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
             Home
           </a>
@@ -28,17 +28,7 @@
           <app-theme-switcher [themesService]="themesService"></app-theme-switcher>
         </div>
 
-        <div *ngIf="!authService.user" class="sm:hidden items-center justify-end">
-          <a routerLink="login"
-             class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            Sign
-            in </a>
-          <a routerLink="register"
-             class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-500 hover:bg-primary-600 active:bg-primary-700">
-            Sign up </a>
-        </div>
-
-        <div *ngIf="!authService.user" class="md:flex items-center justify-end">
+        <div *ngIf="!authService.user" class="items-center justify-end">
           <button
             (click)="showLoginModal()"
              class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">

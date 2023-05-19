@@ -3,8 +3,7 @@ import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-input-group',
-  templateUrl: './input-group.component.html',
-  styleUrls: ['./input-group.component.scss']
+  templateUrl: './input-group.component.html'
 })
 export class InputGroupComponent {
   @Input() field: FormControl;

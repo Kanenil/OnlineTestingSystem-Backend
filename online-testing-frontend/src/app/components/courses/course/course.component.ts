@@ -4,8 +4,7 @@ import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-course',
-  templateUrl: './course.component.html',
-  styleUrls: ['./course.component.scss']
+  templateUrl: './course.component.html'
 })
 export class CourseComponent {
   @Input() course : ICourse;

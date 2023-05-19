@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {IAuthResponse, IRegisterUser, IUser} from "../models/auth";
+import {IAuthResponse, IFinishGoogleRegistration, IRegisterUser, IUser} from "../models/auth";
 import {catchError, Observable, retry, tap, throwError} from "rxjs";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpContext, HttpContextToken, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {LocalStorageService} from "./local-storage.service";
 import jwt_decode from 'jwt-decode';
@@ -25,28 +25,35 @@ export class AuthService {
   login(email: string, password: string):Observable<IAuthResponse> {
     return this.http.post<IAuthResponse>(`${environment.apiUrl}${GlobalConstants.routes.login}`, {email,password})
       .pipe(
-        tap(resp=>{
-          console.log(resp)
-          localStorage.setItem('token', resp.token);
-          this.user = this.decodeToken(resp.token);
-          return resp;
-        }),
-        retry(2),
-        catchError(this.errorHandler.bind(this))
+        tap(resp=>this.saveUser(resp)),
+        retry(2)
       );
   }
 
   register(model: IRegisterUser):Observable<IAuthResponse> {
     return this.http.post<IAuthResponse>(`${environment.apiUrl}${GlobalConstants.routes.register}`, model)
       .pipe(
+        tap(resp=>this.saveUser(resp)),
+        retry(2)
+      );
+  }
+
+  googleLogin(googleToken: string): Observable<IAuthResponse> {
+    localStorage.setItem('googleToken', googleToken)
+    return this.http.post<IAuthResponse>(`${environment.apiUrl}${GlobalConstants.routes.googleLogin}`, {googleToken})
+      .pipe(
         tap(resp=>{
-          console.log(resp)
-          localStorage.setItem('token', resp.token);
-          this.user = this.decodeToken(resp.token);
-          return resp;
-        }),
-        retry(2),
-        catchError(this.errorHandler.bind(this))
+          localStorage.removeItem('googleToken')
+          return this.saveUser(resp)
+        })
+      );
+  }
+
+  googleRegistration(model: IFinishGoogleRegistration): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`${environment.apiUrl}${GlobalConstants.routes.googleRegister}`, model)
+      .pipe(
+        tap(resp=> this.saveUser(resp)),
+        retry(2)
       );
   }
 
@@ -55,9 +62,10 @@ export class AuthService {
     this.user = null;
   }
 
-  private errorHandler(error: HttpErrorResponse) {
-    this.errorService.handle(error.message)
-    return throwError(()=>error.message)
+  private saveUser(response: IAuthResponse):IAuthResponse {
+    localStorage.setItem('token', response.token);
+    this.user = this.decodeToken(response.token);
+    return response;
   }
 
   private decodeToken(token: string): IUser | null {

@@ -3,8 +3,7 @@ import {ThemesService} from "../../../services/themes.service";
 
 @Component({
   selector: 'app-theme-switcher',
-  templateUrl: './theme-switcher.component.html',
-  styleUrls: ['./theme-switcher.component.scss']
+  templateUrl: './theme-switcher.component.html'
 })
 export class ThemeSwitcherComponent {
 

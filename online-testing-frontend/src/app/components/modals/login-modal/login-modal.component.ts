@@ -1,16 +1,43 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
-import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ModalService} from "../../../services/modal.service";
+import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
 
 @Component({
   selector: 'app-login-modal',
-  templateUrl: './login-modal.component.html',
-  styleUrls: ['./login-modal.component.scss']
+  templateUrl: './login-modal.component.html'
 })
-export class LoginModalComponent {
-  constructor(private authService: AuthService, private modalService: ModalService) {
+export class LoginModalComponent implements OnInit, OnDestroy {
+  constructor(
+    private authService: AuthService,
+    public modalService: ModalService,
+    private socialService: SocialAuthService)
+  {}
+
+  googleUser: SocialUser | null = null;
+
+  ngOnInit() {
+    this.socialService.authState.subscribe((user)=>{
+      if(user) {
+        this.googleUser = user;
+        this.authService.googleLogin(user.idToken).subscribe(()=>{
+          this.modalService.close();
+        })
+      }
+    })
+  }
+
+  ngOnDestroy() {
+
+    if(this.googleUser) {
+      this.socialService.signOut();
+      this.googleUser = null;
+    }
+
+
+
+
   }
 
 

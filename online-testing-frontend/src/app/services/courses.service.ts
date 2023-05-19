@@ -12,7 +12,6 @@ import {GlobalConstants} from "../GlobalConstants";
 })
 export class CoursesService {
   constructor(private http: HttpClient, private localStore: LocalStorageService, private errorService: ErrorService) {
-
   }
 
   courses: ICourse[] = []
@@ -24,13 +23,8 @@ export class CoursesService {
           this.courses = resp;
           return resp;
         }),
-        retry(2),
-        catchError(this.errorHandler.bind(this))
+        retry(2)
       );
   }
 
-  private errorHandler(error: HttpErrorResponse) {
-    this.errorService.handle(error.message)
-    return throwError(() => error.message)
-  }
 }

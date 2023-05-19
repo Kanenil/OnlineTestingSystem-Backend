@@ -3,8 +3,7 @@ import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-mobile-menu',
-  templateUrl: './mobile-menu.component.html',
-  styleUrls: ['./mobile-menu.component.scss']
+  templateUrl: './mobile-menu.component.html'
 })
 export class MobileMenuComponent {
   isOpen = false;

@@ -6,8 +6,7 @@ import {IRegisterUser} from "../../models/auth";
 
 @Component({
   selector: 'app-register-page',
-  templateUrl: './register-page.component.html',
-  styleUrls: ['./register-page.component.scss']
+  templateUrl: './register-page.component.html'
 })
 export class RegisterPageComponent {
 

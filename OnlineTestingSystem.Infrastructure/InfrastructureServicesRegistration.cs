@@ -11,6 +11,7 @@ using OnlineTestingSystem.Infrastructure.Mail;
 using OnlineTestingSystem.Application.Contracts.Identity;
 using OnlineTestingSystem.Infrastructure.Identity;
 using OnlineTestingSystem.Infrastructure.JwtToken;
+using OnlineTestingSystem.Infrastructure.Upload;
 
 namespace OnlineTestingSystem.Infrastructure
 {
@@ -22,6 +23,7 @@ namespace OnlineTestingSystem.Infrastructure
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IJwtTokenService, JwtTokenService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IUploadService, UploadService>();
 
             return services;
         }

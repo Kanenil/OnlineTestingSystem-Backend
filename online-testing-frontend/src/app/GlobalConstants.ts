@@ -5,6 +5,8 @@ export class GlobalConstants {
   public static routes = {
     login: '/account/login',
     register: '/account/register',
+    googleRegister: '/account/google/register',
+    googleLogin: '/account/google/login',
     courses: '/courses',
   };
 

@@ -11,5 +11,7 @@ namespace OnlineTestingSystem.Application.Contracts.Identity
     {
         Task<AuthResponse> Login(AuthRequest request);
         Task<AuthResponse> Register(RegistrationRequest request);
+        Task<AuthResponse> GoogleLogin(string googleToken);
+        Task<AuthResponse> GoogleRegister(GoogleRegister model);
     }
 }

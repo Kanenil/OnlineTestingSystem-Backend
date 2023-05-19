@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineTestingSystem.Application.Contracts.Identity;
 using OnlineTestingSystem.Application.Models.Identity;
 
@@ -27,5 +26,18 @@ namespace OnlineTestingSystem.API.Controllers
         {
             return Ok(await _authenticationService.Register(request));
         }
+
+        [HttpPost("google/login")]
+        public async Task<ActionResult<AuthResponse>> GoogleLogin(GoogleLogin model)
+        {
+            return Ok(await _authenticationService.GoogleLogin(model.GoogleToken));
+        }
+
+        [HttpPost("google/register")]
+        public async Task<ActionResult<AuthResponse>> GoogleRegister(GoogleRegister model)
+        {
+            return Ok(await _authenticationService.GoogleRegister(model));
+        }
+
     }
 }

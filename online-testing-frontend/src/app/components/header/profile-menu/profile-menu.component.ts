@@ -3,8 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-profile-menu',
-  templateUrl: './profile-menu.component.html',
-  styleUrls: ['./profile-menu.component.scss']
+  templateUrl: './profile-menu.component.html'
 })
 export class ProfileMenuComponent {
   isOpen = false;

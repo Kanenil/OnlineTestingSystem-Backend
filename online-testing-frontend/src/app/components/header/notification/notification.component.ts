@@ -3,8 +3,7 @@ import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-notification',
-  templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.scss']
+  templateUrl: './notification.component.html'
 })
 export class NotificationComponent {
 

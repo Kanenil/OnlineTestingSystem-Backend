@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,18 +10,26 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { HeaderComponent } from './components/header/header.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AuthService} from "./services/auth.service";
-import { ErrorComponent } from './components/error/error.component';
 import { InputGroupComponent } from './components/forms/input-group/input-group.component';
-import { ProfileMenuComponent } from './components/header/profile-menu/profile-menu.component';
 import { CoursesListComponent } from './components/courses/courses-list/courses-list.component';
 import { CourseComponent } from './components/courses/course/course.component';
-import { ThemeSwitcherComponent } from './components/header/theme-switcher/theme-switcher.component';
-import { MobileMenuComponent } from './components/header/mobile-menu/mobile-menu.component';
-import { NotificationComponent } from './components/header/notification/notification.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ModalComponent } from './components/modals/modal/modal.component';
 import { LoginModalComponent } from './components/modals/login-modal/login-modal.component';
+import {HeaderModule} from "./components/header/header.module";
+
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleSigninButtonModule
+} from '@abacritt/angularx-social-login';
+import {
+  GoogleLoginProvider
+} from '@abacritt/angularx-social-login';
+import {environment} from "../environments/environment";
+import { GoogleFinishPageComponent } from './pages/google-finish-page/google-finish-page.component';
+import {GlobalErrorHandler} from "./global-error-handler";
+import { NotificationComponent } from './components/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -31,26 +39,47 @@ import { LoginModalComponent } from './components/modals/login-modal/login-modal
     HomePageComponent,
     NotFoundPageComponent,
     HeaderComponent,
-    ErrorComponent,
     InputGroupComponent,
-    ProfileMenuComponent,
     CoursesListComponent,
     CourseComponent,
-    ThemeSwitcherComponent,
-    MobileMenuComponent,
-    NotificationComponent,
     FooterComponent,
     ModalComponent,
     LoginModalComponent,
+    GoogleFinishPageComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HeaderModule,
+    SocialLoginModule,
+    GoogleSigninButtonModule
   ],
-  providers: [AuthService],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              environment.googleClientId,{
+                oneTapEnabled: false,
+              }
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
