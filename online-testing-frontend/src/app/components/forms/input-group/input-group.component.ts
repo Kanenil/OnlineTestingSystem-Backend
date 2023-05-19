@@ -8,6 +8,6 @@ import {FormControl} from "@angular/forms";
 export class InputGroupComponent {
   @Input() field: FormControl;
   @Input() name: string;
-  @Input() title: string;
   @Input() type: string;
+  @Input() triedSubmit: boolean;
 }

@@ -29,7 +29,9 @@ import {
 import {environment} from "../environments/environment";
 import { GoogleFinishPageComponent } from './pages/google-finish-page/google-finish-page.component';
 import {GlobalErrorHandler} from "./global-error-handler";
-import { NotificationComponent } from './components/notification/notification.component';
+import { NotificationComponent } from './components/notifications/notification/notification.component';
+import { PasswordGroupComponent } from './components/forms/password-group/password-group.component';
+import { ModalNotificationComponent } from './components/notifications/modal-notification/modal-notification.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { NotificationComponent } from './components/notification/notification.co
     LoginModalComponent,
     GoogleFinishPageComponent,
     NotificationComponent,
+    PasswordGroupComponent,
+    ModalNotificationComponent,
   ],
   imports: [
     BrowserModule,

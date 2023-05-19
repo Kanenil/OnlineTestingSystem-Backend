@@ -1,9 +1,9 @@
 
-<div class="absolute top-16 left-1/2 -translate-x-1/2 flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto w-full lg:w-2/4">
+<div class="absolute top-16 left-1/2 -translate-x-1/2 flex bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden mx-auto w-full lg:w-2/4">
   <div class="hidden lg:block lg:w-1/2 lg:flex-none bg-cover" style="background-image:url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')"></div>
   <form ngForm="form" (submit)="submit()" class="w-full p-8 lg:w-1/2">
-    <h2 class="text-2xl font-semibold text-gray-700 text-center">Smart Test</h2>
-    <p class="text-xl text-gray-600 text-center">Welcome back!</p>
+    <h2 class="text-2xl font-semibold text-gray-700 dark:text-white text-center">Smart Test</h2>
+    <p class="text-xl text-gray-600 dark:text-gray-200 text-center">Welcome back!</p>
 
     <div class="mt-8">
       <div class="mt-1 flex justify-center items-center gap-3">
@@ -21,24 +21,29 @@
 
     <div class="mt-4 flex items-center justify-between">
       <span class="border-b w-1/5 lg:w-1/4"></span>
-      <div class="text-xs text-center text-gray-500 uppercase">or login with email</div>
+      <div class="text-xs text-center text-gray-500 dark:text-gray-100 uppercase">or login with email</div>
       <span class="border-b w-1/5 lg:w-1/4"></span>
     </div>
+
+    <app-modal-notification></app-modal-notification>
+
     <app-input-group [type]="'email'"
                      [field]="form.controls.email"
                      [title]="'Email'"
+                     [triedSubmit]="isTriedSubmit"
                      [name]="'email'">
-      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
     </app-input-group>
 
 
     <app-input-group [type]="'password'"
                      [field]="form.controls.password"
                      [title]="'Password'"
+                     [triedSubmit]="isTriedSubmit"
                      [name]="'password'">
       <div class="flex justify-between">
-        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-        <a href="#" class="text-xs text-gray-500">Forget Password?</a>
+        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Password</label>
+        <a href="#" class="text-xs text-gray-500 dark:text-gray-100">Forget Password?</a>
       </div>
     </app-input-group>
     <div class="mt-8">
@@ -46,12 +51,12 @@
     </div>
     <div class="mt-4 flex items-center justify-between">
       <span class="border-b w-1/5 md:w-1/4"></span>
-      <a href="#" class="text-xs text-gray-500 uppercase">or sign up</a>
+      <a routerLink="/register" (click)="modalService.close()" class="text-xs text-gray-500 dark:text-gray-100 uppercase">or sign up</a>
       <span class="border-b w-1/5 md:w-1/4"></span>
     </div>
   </form>
 
-  <button type="button" (click)="modalService.close()" class="flex p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white h-10 text-gray-700 hover:text-black">
+  <button type="button" (click)="modalService.close()" class="flex p-2 m-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-gray-400 h-10 text-gray-700 dark:text-gray-500 dark:hover:text-gray-200 hover:text-black">
     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
          stroke="currentColor" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>

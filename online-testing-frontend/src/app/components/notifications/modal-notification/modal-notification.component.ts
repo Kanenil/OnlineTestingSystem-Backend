@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import {NotificationService} from "../../../services/notification.service";
 
 @Component({
-  selector: 'app-global-notification',
-  templateUrl: './notification.component.html'
+  selector: 'app-modal-notification',
+  templateUrl: './modal-notification.component.html'
 })
-export class NotificationComponent {
-
+export class ModalNotificationComponent {
   message:string;
   isModal:boolean;
   isError:boolean;

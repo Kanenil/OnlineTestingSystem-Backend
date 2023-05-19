@@ -10,6 +10,8 @@ import {IRegisterUser} from "../../models/auth";
 })
 export class RegisterPageComponent {
 
+  isTriedSubmit = false;
+
   form = new FormGroup({
     firstName: new FormControl<string>('', [
       Validators.required,
@@ -43,8 +45,6 @@ export class RegisterPageComponent {
   }
 
   submit() {
-    console.log(this.form)
-
     if (this.form.status == 'VALID') {
       const data : IRegisterUser = {
         firstName: this.form.controls.firstName.value as string,
@@ -57,6 +57,8 @@ export class RegisterPageComponent {
       this.authService.register(data).subscribe(resp => {
         this.router.navigateByUrl('/')
       })
+    } else {
+      this.isTriedSubmit = true;
     }
   }
 

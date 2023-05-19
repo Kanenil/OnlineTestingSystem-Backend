@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
+import {NotificationService} from "../../services/notification.service";
 
 @Component({
   selector: 'app-login-page',
@@ -9,10 +10,14 @@ import {Router} from "@angular/router";
 })
 export class LoginPageComponent {
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router)
+  {
     if(authService.user) router.navigateByUrl('')
   }
 
+  isTriedSubmit = false;
 
   form = new FormGroup({
     email: new FormControl<string>('', [
@@ -30,6 +35,8 @@ export class LoginPageComponent {
       this.authService.login(this.form.controls.email.value as string, this.form.controls.password.value as string).subscribe(resp=>{
         this.router.navigateByUrl('/')
       })
+    } else {
+      this.isTriedSubmit = true;
     }
   }
 }

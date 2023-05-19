@@ -15,6 +15,8 @@ export class LoginModalComponent implements OnInit, OnDestroy {
     private socialService: SocialAuthService)
   {}
 
+  isTriedSubmit = false;
+
   googleUser: SocialUser | null = null;
 
   ngOnInit() {
@@ -29,15 +31,10 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
     if(this.googleUser) {
       this.socialService.signOut();
       this.googleUser = null;
     }
-
-
-
-
   }
 
 
@@ -54,9 +51,16 @@ export class LoginModalComponent implements OnInit, OnDestroy {
 
   submit() {
     if(this.form.status == 'VALID') {
-      this.authService.login(this.form.controls.email.value as string, this.form.controls.password.value as string).subscribe(resp=>{
-        this.modalService.close()
-      })
+      try {
+        this.authService.login(this.form.controls.email.value as string, this.form.controls.password.value as string, true).subscribe(resp=>{
+          this.modalService.close()
+        })
+      } catch (error) {
+        console.log('error here', error)
+      }
+
+    } else {
+      this.isTriedSubmit = true;
     }
   }
 }

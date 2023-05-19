@@ -3,6 +3,7 @@ import {AuthService} from "../../services/auth.service";
 import {ThemesService} from "../../services/themes.service";
 import {ModalService} from "../../services/modal.service";
 import {LoginModalComponent} from "../modals/login-modal/login-modal.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -12,10 +13,12 @@ export class HeaderComponent {
   constructor(
     public authService: AuthService,
     public themesService: ThemesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router
   ) {}
 
   showLoginModal() {
-    this.modalService.show(LoginModalComponent);
+    if(this.router.url !== '/login')
+      this.modalService.show(LoginModalComponent);
   }
 }
