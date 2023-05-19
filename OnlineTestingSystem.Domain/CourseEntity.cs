@@ -1,4 +1,5 @@
 ﻿using OnlineTestingSystem.Domain.Common;
+using OnlineTestingSystem.Domain.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,5 +23,8 @@ namespace OnlineTestingSystem.Domain
         public string? Description { get; set; }
         [StringLength(255)]
         public string? Section { get; set; }
+        [Required]
+        public bool IsOnlyForCodeAccess { get; set; } = false;
+        public virtual ICollection<CourseUserEntity> CourseUsers { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineTestingSystem.Application.DTOs.Course
 {
-    public interface ICourseDTO
+    public class CourseCreateDTO : ICourseDTO
     {
         public string Name { get; set; }
         public string? Description { get; set; }

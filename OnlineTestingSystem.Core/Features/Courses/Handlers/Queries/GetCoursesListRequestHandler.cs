@@ -25,7 +25,7 @@ namespace OnlineTestingSystem.Application.Features.Courses.Handlers.Queries
         public async Task<List<CourseDTO>> Handle(GetCoursesListRequest request, CancellationToken cancellationToken)
         {
             var courses = await _coursesRepository.GetAllAsync();
-            return _mapper.Map<List<CourseDTO>>(courses.OrderBy(x => x.Id));
+            return _mapper.Map<List<CourseDTO>>(courses);
         }
     }
 }

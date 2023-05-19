@@ -5,12 +5,14 @@ import {RegisterPageComponent} from "./pages/register-page/register-page.compone
 import {HomePageComponent} from "./pages/home-page/home-page.component";
 import {NotFoundPageComponent} from "./pages/not-found-page/not-found-page.component";
 import {GoogleFinishPageComponent} from "./pages/google-finish-page/google-finish-page.component";
+import {UserPageComponent} from "./pages/user-page/user-page.component";
 
 const routes: Routes = [
   {path: '', component: HomePageComponent, data: { title: 'Home' }},
   {path: 'login', component: LoginPageComponent, data: { title: 'Login' }},
   {path: 'register', component: RegisterPageComponent, data: { title: 'Register' }},
   {path: 'google/finish', component: GoogleFinishPageComponent, data: { title: 'Finish Registration' }},
+  { path: 'user/:id', component: UserPageComponent, data: { title: 'User' } },
   {path: '**', component: NotFoundPageComponent, data: { title: 'Not Found' }}
 ];
 

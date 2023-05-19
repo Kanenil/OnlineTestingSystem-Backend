@@ -137,6 +137,9 @@ namespace OnlineTestingSystem.Presistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsOnlyForCodeAccess")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -149,6 +152,50 @@ namespace OnlineTestingSystem.Presistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tblCourses");
+                });
+
+            modelBuilder.Entity("OnlineTestingSystem.Domain.CourseRoleEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tblCourseRoles");
+                });
+
+            modelBuilder.Entity("OnlineTestingSystem.Domain.CourseUserEntity", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("tblCourseUsers");
                 });
 
             modelBuilder.Entity("OnlineTestingSystem.Domain.Identity.RoleEntity", b =>
@@ -191,6 +238,10 @@ namespace OnlineTestingSystem.Presistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("BackgroundImage")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -208,7 +259,6 @@ namespace OnlineTestingSystem.Presistence.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -313,6 +363,33 @@ namespace OnlineTestingSystem.Presistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OnlineTestingSystem.Domain.CourseUserEntity", b =>
+                {
+                    b.HasOne("OnlineTestingSystem.Domain.CourseEntity", "Course")
+                        .WithMany("CourseUsers")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineTestingSystem.Domain.CourseRoleEntity", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineTestingSystem.Domain.Identity.UserEntity", "User")
+                        .WithMany("CourseUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("OnlineTestingSystem.Domain.Identity.UserRoleEntity", b =>
                 {
                     b.HasOne("OnlineTestingSystem.Domain.Identity.RoleEntity", "Role")
@@ -332,6 +409,11 @@ namespace OnlineTestingSystem.Presistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("OnlineTestingSystem.Domain.CourseEntity", b =>
+                {
+                    b.Navigation("CourseUsers");
+                });
+
             modelBuilder.Entity("OnlineTestingSystem.Domain.Identity.RoleEntity", b =>
                 {
                     b.Navigation("UserRoles");
@@ -339,6 +421,8 @@ namespace OnlineTestingSystem.Presistence.Migrations
 
             modelBuilder.Entity("OnlineTestingSystem.Domain.Identity.UserEntity", b =>
                 {
+                    b.Navigation("CourseUsers");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

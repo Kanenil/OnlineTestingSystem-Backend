@@ -47,7 +47,8 @@ namespace OnlineTestingSystem.Presistence
                         LastName = "Admin",
                         Email = "admin@localhost",
                         UserName = "admin@localhost",
-                        Image = string.Empty
+                        Image = string.Empty,
+                        BackgroundImage = string.Empty,
                     };
                     var result = userManager.CreateAsync(user, "123456")
                         .Result;
@@ -57,6 +58,15 @@ namespace OnlineTestingSystem.Presistence
                             .AddToRoleAsync(user, Roles.Admin)
                             .Result;
                     }
+                }
+
+                if(!context.CourseRoles.Any())
+                {
+                    foreach (var role in CourseRoles.All)
+                    {
+                        context.CourseRoles.Add(new() { Name = role });
+                    }
+                    context.SaveChanges();
                 }
             }
         }

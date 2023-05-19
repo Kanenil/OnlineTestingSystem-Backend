@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OnlineTestingSystem.Domain;
+using OnlineTestingSystem.Domain.Common;
 using OnlineTestingSystem.Domain.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,10 +37,33 @@ namespace OnlineTestingSystem.Presistence
                 ur.HasOne(ur => ur.User)
                     .WithMany(r => r.UserRoles)
                     .HasForeignKey(u => u.UserId)
-                    .IsRequired();
+                .IsRequired();
             });
+
+
+
+
+            builder.Entity<CourseUserEntity>(cu =>
+            {
+                cu.HasKey(cu => new { cu.UserId, cu.CourseId });
+
+                cu.HasOne(ur => ur.User)
+                    .WithMany(r => r.CourseUsers)
+                    .HasForeignKey(r => r.UserId)
+                    .IsRequired();
+
+                cu.HasOne(ur => ur.Course)
+                    .WithMany(r => r.CourseUsers)
+                    .HasForeignKey(r => r.CourseId)
+                    .IsRequired();
+                
+            });
+
+
         }
 
         public DbSet<CourseEntity> Courses { get; set; }
+        public DbSet<CourseRoleEntity> CourseRoles { get; set; }
+        public DbSet<CourseUserEntity> CourseUsers { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineTestingSystem.Application.DTOs.Course;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Commands;
@@ -40,9 +41,11 @@ namespace OnlineTestingSystem.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CreateCourseDTO course)
+        [Authorize]
+        public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CourseCreateDTO course)
         {
-            var command = new CreateCourseCommand { CourseDTO = course };
+            string email = User.Claims.First().Value;
+            var command = new CreateCourseCommand { CourseDTO = course, Email = email };
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -52,6 +55,7 @@ namespace OnlineTestingSystem.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
+        [Authorize]
         public async Task<ActionResult> Put([FromBody] CourseDTO course)
         {
             var command = new UpdateCourseCommand { CourseDTO = course };
@@ -64,6 +68,7 @@ namespace OnlineTestingSystem.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             var command = new DeleteCourseCommand { Id = id };

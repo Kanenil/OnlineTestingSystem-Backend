@@ -11,10 +11,29 @@ namespace OnlineTestingSystem.Presistence.Repositories
 {
     public class CoursesRepository : GenericRepository<CourseEntity>, ICoursesRepository
     {
-        private readonly OnlineTestingDbContext _dbContext;
         public CoursesRepository(OnlineTestingDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
+        }
+
+        public override async Task<CourseEntity> GetAsync(int id)
+        {
+            return await _dbContext.Courses
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.Role)
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.User)
+                .FirstAsync(x => x.Id == id);
+        }
+
+        public override async Task<IReadOnlyList<CourseEntity>> GetAllAsync()
+        {
+            return await _dbContext
+                .Courses
+                .Include(x=>x.CourseUsers)
+                    .ThenInclude(x=>x.Role)
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.User)
+                .ToListAsync();
         }
 
         public async Task<string> GenerateCode()
@@ -31,5 +50,6 @@ namespace OnlineTestingSystem.Presistence.Repositories
 
             return code;
         }
+
     }
 }

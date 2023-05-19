@@ -32,6 +32,7 @@ import {GlobalErrorHandler} from "./global-error-handler";
 import { NotificationComponent } from './components/notifications/notification/notification.component';
 import { PasswordGroupComponent } from './components/forms/password-group/password-group.component';
 import { ModalNotificationComponent } from './components/notifications/modal-notification/modal-notification.component';
+import { UserPageComponent } from './pages/user-page/user-page.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ModalNotificationComponent } from './components/notifications/modal-not
     NotificationComponent,
     PasswordGroupComponent,
     ModalNotificationComponent,
+    UserPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
 ﻿using OnlineTestingSystem.Application.DTOs.Base;
+using OnlineTestingSystem.Application.DTOs.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,7 @@ namespace OnlineTestingSystem.Application.DTOs.Course
         public string? Section { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime DateCreated { get; set; }
+        public bool IsOnlyForCodeAccess { get; set; }
+        public ICollection<UserRoleDTO> Users { get; set; }
     }
 }

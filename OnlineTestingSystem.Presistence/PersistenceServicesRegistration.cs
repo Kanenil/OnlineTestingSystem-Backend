@@ -23,6 +23,8 @@ namespace OnlineTestingSystem.Presistence
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ICoursesRepository, CoursesRepository>();
+            services.AddScoped<ICourseUserRepository, CourseUserRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
 
             return services;
         }

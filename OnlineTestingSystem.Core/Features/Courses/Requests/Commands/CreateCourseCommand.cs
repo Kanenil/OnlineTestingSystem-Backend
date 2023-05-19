@@ -11,6 +11,7 @@ namespace OnlineTestingSystem.Application.Features.Courses.Requests.Commands
 {
     public class CreateCourseCommand : IRequest<BaseCommandResponse>
     {
-        public CreateCourseDTO CourseDTO { get; set; }
+        public CourseCreateDTO CourseDTO { get; set; }
+        public string Email { get; set; }
     }
 }

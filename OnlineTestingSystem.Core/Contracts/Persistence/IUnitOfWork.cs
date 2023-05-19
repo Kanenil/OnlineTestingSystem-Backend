@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineTestingSystem.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,9 @@ namespace OnlineTestingSystem.Application.Contracts.Persistence
     public interface IUnitOfWork : IDisposable
     {
         ICoursesRepository CoursesRepository { get; }
+        ICourseUserRepository CourseUserRepository { get; }
+        IUsersRepository UsersRepository { get; }
+        Task<CourseRoleEntity> GetRoleAsync(string name);
         Task Save();
     }
 }
