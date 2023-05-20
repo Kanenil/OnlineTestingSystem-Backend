@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
+import { RegisterPageComponent } from './pages/auth/register-page/register-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -27,16 +27,16 @@ import {
   GoogleLoginProvider
 } from '@abacritt/angularx-social-login';
 import {environment} from "../environments/environment";
-import { GoogleFinishPageComponent } from './pages/google-finish-page/google-finish-page.component';
+import { GoogleFinishPageComponent } from './pages/auth/google-finish-page/google-finish-page.component';
 import {GlobalErrorHandler} from "./global-error-handler";
 import { NotificationComponent } from './components/notifications/notification/notification.component';
 import { PasswordGroupComponent } from './components/forms/password-group/password-group.component';
 import { ModalNotificationComponent } from './components/notifications/modal-notification/modal-notification.component';
-import { UserPageComponent } from './pages/user-page/user-page.component';
+import { UserPageComponent } from './pages/profile/user-page/user-page.component';
 import { UserCourseListComponent } from './components/courses/user-course-list/user-course-list.component';
 import { MaxLenghtDotsPipe } from './pipes/max-lenght-dots.pipe';
 import { UserCourseComponent } from './components/courses/user-course/user-course.component';
-import { CoursesPageComponent } from './pages/courses-page/courses-page.component';
+import { CoursesPageComponent } from './pages/courses/courses-page/courses-page.component';
 
 @NgModule({
   declarations: [

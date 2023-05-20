@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {UsersService} from "../../services/users.service";
-import {IUser} from "../../models/users/User";
-import {AuthService} from "../../services/auth.service";
+import {UsersService} from "../../../services/users.service";
+import {IUser} from "../../../models/users/User";
+import {AuthService} from "../../../services/auth.service";
 import {Title} from "@angular/platform-browser";
 
 @Component({

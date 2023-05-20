@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {IRegisterUser} from "../../models/auth/RegisterUser";
+import {IRegisterUser} from "../../../models/auth/RegisterUser";
 
 @Component({
   selector: 'app-register-page',
