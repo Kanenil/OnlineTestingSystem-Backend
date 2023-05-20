@@ -22,23 +22,24 @@ export class ErrorService {
 
   getServerErrorMessage(error: HttpErrorResponse): string {
 
-    console.log(error)
-
-    if(!navigator.onLine)
+    if (!navigator.onLine)
       return 'No Internet Connection'
 
-    switch (error.error.ErrorMessage) {
-      case BackendErrors.GOOGLE_REGISTER: {
-        this.modalService.close();
+    if (error.error.ErrorMessage.includes(BackendErrors.GOOGLE_REGISTER)) {
+      this.modalService.close();
 
-        const token = localStorage.getItem('googleToken');
-        this.router.navigate(['google','finish'], {queryParams: {token}})
-        localStorage.removeItem('googleToken')
+      const token = localStorage.getItem('googleToken');
+      this.router.navigate(['google', 'finish'], {queryParams: {token}})
+      localStorage.removeItem('googleToken')
 
-        return ''
-      }
-      default: return error.message
+      return ''
+    } else if (error.error.ErrorMessage.includes(BackendErrors.USER_WITH_SLUG_NOT_FOUND)) {
+      this.router.navigate([".."])
+
+      return ''
+    } else {
+      return error.message
     }
-  }
 
+  }
 }

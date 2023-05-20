@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {AuthService} from "../../../services/auth.service";
+import {IUser} from "../../../models/users/User";
 
 @Component({
   selector: 'app-notification',
@@ -7,5 +7,5 @@ import {AuthService} from "../../../services/auth.service";
 })
 export class NotificationComponent {
 
-  @Input() authService: AuthService;
+  @Input() loginedUser: IUser| null;
 }

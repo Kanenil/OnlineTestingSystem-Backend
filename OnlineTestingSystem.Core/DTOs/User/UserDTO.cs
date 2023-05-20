@@ -12,8 +12,9 @@ namespace OnlineTestingSystem.Application.DTOs.User
 {
     public class UserDTO
     {
-        public string FirstName { get; set; }
         public string Slug { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? Image { get; set; }
         public string? BackgroundImage { get; set; }

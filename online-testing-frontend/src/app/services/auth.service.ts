@@ -1,28 +1,40 @@
-import { Injectable } from '@angular/core';
-import {IAuthResponse, IFinishGoogleRegistration, IRegisterUser, IUser} from "../models/auth";
-import {catchError, EMPTY, NEVER, Observable, retry, tap, throwError} from "rxjs";
-import {HttpClient, HttpContext, HttpContextToken, HttpErrorResponse} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, catchError, NEVER, Observable, retry, Subject, tap, throwError} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {LocalStorageService} from "./local-storage.service";
 import jwt_decode from 'jwt-decode';
-import {ErrorService} from "./error.service";
 import {GlobalConstants} from "../GlobalConstants";
 import {NotificationService} from "./notification.service";
+import {UsersService} from "./users.service";
+import {ITokenUser} from "../models/auth/TokenUser";
+import {IUser} from "../models/users/User";
+import {IAuthResponse} from "../models/auth/AuthResponse";
+import {IRegisterUser} from "../models/auth/RegisterUser";
+import {IFinishGoogleRegistration} from "../models/auth/FinishGoogleRegistration";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: IUser | null = null
+  user$=new BehaviorSubject<IUser | null>(null);
+  //user = this.user$.asObservable()
 
   constructor(
     private http: HttpClient,
     private localStore: LocalStorageService,
-    private notificationService: NotificationService) {
-    const token = localStore.getData('token');
+    private notificationService: NotificationService,
+    private usersService : UsersService
+  ) {
+    const token = this.localStore.getData('token');
     if(token) {
-      this.user = this.decodeToken(token)
+      const decodeToken = this.decodeToken(token)
+      if(decodeToken) {
+        this.usersService.getBySlug(decodeToken.slug).subscribe(user=>{
+          this.user$.next(user);
+        })
+      }
     }
   }
 
@@ -81,18 +93,24 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.user = null;
+    this.user$.next(null);
+    //this.user = null;
   }
 
   private saveUser(response: IAuthResponse):IAuthResponse {
     localStorage.setItem('token', response.token);
-    this.user = this.decodeToken(response.token);
+    const decodeToken = this.decodeToken(response.token);
+    if(decodeToken) {
+      this.usersService.getBySlug(decodeToken.slug).subscribe(user=>{
+        this.user$.next(user);
+      })
+    }
     return response;
   }
 
-  private decodeToken(token: string): IUser | null {
+  private decodeToken(token: string): ITokenUser | null {
     try {
-      return jwt_decode<IUser>(token);
+      return jwt_decode<ITokenUser>(token);
     } catch(Error) {
       return null;
     }

@@ -1,16 +1,23 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
-import {ICourse} from "../../../models/course";
-import {AuthService} from "../../../services/auth.service";
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {ICourse} from "../../../models/courses/Course";
+import {IUser} from "../../../models/users/User";
+import {IRole} from "../../../models/Role";
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html'
 })
-export class CourseComponent {
-  @Input() course : ICourse;
+export class CourseComponent implements OnChanges {
+  @Input() course: ICourse;
 
+  owner: { role: IRole; user: IUser } ;
 
-  constructor(public authService: AuthService) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.course.currentValue) {
+      this.course = changes.course.currentValue;
+      this.owner = this.course.users.filter(value=>value.role.name === "Owner")[0];
+    }
   }
+
 
 }

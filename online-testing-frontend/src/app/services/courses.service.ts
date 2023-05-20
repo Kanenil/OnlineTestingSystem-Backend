@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, delay, Observable, retry, tap, throwError} from "rxjs";
-import {ICourse} from "../models/course";
+import {ICourse} from "../models/courses/Course";
 import {environment} from "../../environments/environment";
 import {LocalStorageService} from "./local-storage.service";
 import {ErrorService} from "./error.service";

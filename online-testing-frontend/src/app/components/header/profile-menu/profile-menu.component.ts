@@ -1,5 +1,6 @@
-import { Component, HostListener, Input } from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
+import {IUser} from "../../../models/users/User";
 
 @Component({
   selector: 'app-profile-menu',
@@ -22,8 +23,6 @@ export class ProfileMenuComponent {
     }
   }
 
-
-
-
-  @Input() authService: AuthService;
+  @Input() loginedUser : IUser;
+  @Output() logout:EventEmitter<void> = new EventEmitter()
 }

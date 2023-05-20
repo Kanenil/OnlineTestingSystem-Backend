@@ -31,6 +31,7 @@ namespace OnlineTestingSystem.Infrastructure.JwtToken
             var roles = await _userManager.GetRolesAsync(user);
             List<Claim> claims = new()
             {
+                new Claim("slug", user.Slug),
                 new Claim("email", user.Email),
                 new Claim("name", $"{user.FirstName} {user.LastName}"),
                 new Claim("emailConfirmed", $"{user.EmailConfirmed}"),

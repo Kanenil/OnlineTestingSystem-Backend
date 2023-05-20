@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {CoursesService} from "../../services/courses.service";
-import {HttpClient} from "@angular/common/http";
+import {ICourse} from "../../models/courses/Course";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-home-page',
@@ -8,13 +9,15 @@ import {HttpClient} from "@angular/common/http";
 })
 export class HomePageComponent {
   isLoading = false
+  courses$  = new BehaviorSubject<ICourse[]>([]);
 
-  constructor(public coursesService: CoursesService, private http: HttpClient) {
-    if(!coursesService.courses.length) {
-      this.isLoading = true
-      coursesService.getAll().subscribe(()=>{
-        this.isLoading = false
-      })
-    }
+  constructor(
+    private coursesService: CoursesService
+  ) {
+    this.isLoading = true
+    coursesService.getAll().subscribe(courses=>{
+      this.courses$.next(courses);
+      this.isLoading = false;
+    })
   }
 }

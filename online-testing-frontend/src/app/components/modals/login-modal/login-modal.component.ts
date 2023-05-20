@@ -12,8 +12,8 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     public modalService: ModalService,
-    private socialService: SocialAuthService)
-  {}
+    private socialService: SocialAuthService
+  ) {}
 
   isTriedSubmit = false;
 

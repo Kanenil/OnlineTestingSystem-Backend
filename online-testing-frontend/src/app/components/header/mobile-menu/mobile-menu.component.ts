@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {AuthService} from "../../../services/auth.service";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {IUser} from "../../../models/users/User";
 
 @Component({
   selector: 'app-mobile-menu',
@@ -12,5 +12,6 @@ export class MobileMenuComponent {
     this.isOpen = !this.isOpen;
   }
 
-  @Input() authService: AuthService;
+  @Input() loginedUser: IUser | null;
+  @Output() logout:EventEmitter<void> = new EventEmitter()
 }

@@ -14,10 +14,10 @@
         </div>
         <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
 
-          <a routerLink="/"
+          <a routerLink="/courses"
              routerLinkActive="border-primary-400 hover:border-primary-500 text-gray-900 dark:text-white dark:border-primary-500 dark:hover:border-primary-400"
-             class="transition animate-opacity border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-            Home
+             class="transition animate-opacity border-transparent text-gray-500 dark:text-gray-300 hover:border-primary-500 dark:hover:border-primary-400 hover:text-gray-700 dark:hover:text-gray-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+            Courses
           </a>
 
         </div>
@@ -28,7 +28,7 @@
           <app-theme-switcher [themesService]="themesService"></app-theme-switcher>
         </div>
 
-        <div *ngIf="!authService.user" class="items-center justify-end">
+        <div *ngIf="!loginedUser" class="items-center justify-end">
           <button
             (click)="showLoginModal()"
              class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
@@ -39,21 +39,21 @@
             Sign up </a>
         </div>
 
-        <app-notification [authService]="authService"></app-notification>
+        <app-notification [loginedUser]="loginedUser"></app-notification>
 
-        <div *ngIf="authService.user" class="ml-3 relative">
+        <div *ngIf="loginedUser" class="ml-3 relative">
           <div>
             <button (click)="profileMenu.togglePopup()" type="button"
                     class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:bg-gray-700"
                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-              <img *ngIf="authService.user.image" class="h-8 w-8 rounded-full" src="{{authService.user.image}}" alt="">
-              <div *ngIf="!authService.user.image"
+              <img *ngIf="loginedUser.image" class="h-8 w-8 rounded-full" src="{{loginedUser.image}}" alt="">
+              <div *ngIf="!loginedUser.image"
                    class="h-8 w-8 rounded-full bg-blue-600 flex justify-center items-center">
-                <span class="font-bold text-white">{{authService.user.email.substring(0, 1) | uppercase}}</span>
+                <span class="font-bold text-white">{{loginedUser.firstName.substring(0, 1) | uppercase}}</span>
               </div>
             </button>
           </div>
-          <app-profile-menu [authService]="authService" #profileMenu></app-profile-menu>
+          <app-profile-menu [loginedUser]="loginedUser" (logout)="authService.logout()" #profileMenu></app-profile-menu>
         </div>
       </div>
       <div class="-mr-2 flex items-center sm:hidden">
@@ -77,6 +77,5 @@
     </div>
   </div>
 
-
-  <app-mobile-menu [authService]="authService" #mobileMenu></app-mobile-menu>
+  <app-mobile-menu [loginedUser]="loginedUser" #mobileMenu></app-mobile-menu>
 </nav>

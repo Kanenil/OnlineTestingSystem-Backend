@@ -33,6 +33,10 @@ import { NotificationComponent } from './components/notifications/notification/n
 import { PasswordGroupComponent } from './components/forms/password-group/password-group.component';
 import { ModalNotificationComponent } from './components/notifications/modal-notification/modal-notification.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
+import { UserCourseListComponent } from './components/courses/user-course-list/user-course-list.component';
+import { MaxLenghtDotsPipe } from './pipes/max-lenght-dots.pipe';
+import { UserCourseComponent } from './components/courses/user-course/user-course.component';
+import { CoursesPageComponent } from './pages/courses-page/courses-page.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +57,10 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
     PasswordGroupComponent,
     ModalNotificationComponent,
     UserPageComponent,
+    UserCourseListComponent,
+    MaxLenghtDotsPipe,
+    UserCourseComponent,
+    CoursesPageComponent,
   ],
   imports: [
     BrowserModule,

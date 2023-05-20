@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {IRegisterUser} from "../../models/auth";
+import {IRegisterUser} from "../../models/auth/RegisterUser";
 
 @Component({
   selector: 'app-register-page',
@@ -34,8 +34,6 @@ export class RegisterPageComponent {
   })
 
   constructor(private authService: AuthService, private router: Router) {
-    if (authService.user) router.navigateByUrl('')
-
     this.form.controls.confirm.addValidators(()=>{
       if (this.form.controls.password.value !== this.form.controls.confirm.value)
         return {match: 'Passwords are different'};
