@@ -1,4 +1,5 @@
-﻿using OnlineTestingSystem.Domain.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineTestingSystem.Domain.Common;
 using OnlineTestingSystem.Domain.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,20 +12,31 @@ using System.Threading.Tasks;
 namespace OnlineTestingSystem.Domain
 {
     [Table("tblCourses")]
-    public class CourseEntity : BaseEntity<int>
+    public class CourseEntity : BaseEntity<int>, ISlugEntity
     {
+
         [Required, StringLength(12)]
         public string Code { get; set; }
+
         [StringLength(100)]
         public string? Image { get; set; }
+
         [StringLength(255)]
         public string Name { get; set; }
+
         [StringLength(4000)]
         public string? Description { get; set; }
+
         [StringLength(255)]
         public string? Section { get; set; }
+
         [Required]
         public bool IsOnlyForCodeAccess { get; set; } = false;
+
+        [Required, MaxLength(255)]
+        public string Slug { get; set; }
+
         public virtual ICollection<CourseUserEntity> CourseUsers { get; set; }
+        
     }
 }

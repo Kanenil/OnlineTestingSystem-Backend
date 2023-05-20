@@ -47,8 +47,7 @@ namespace OnlineTestingSystem.Presistence
                         LastName = "Admin",
                         Email = "admin@localhost",
                         UserName = "admin@localhost",
-                        Image = string.Empty,
-                        BackgroundImage = string.Empty,
+                        Slug = "online-testing-admin"
                     };
                     var result = userManager.CreateAsync(user, "123456")
                         .Result;

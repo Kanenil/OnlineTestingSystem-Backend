@@ -34,5 +34,15 @@ namespace OnlineTestingSystem.Presistence.Repositories
                     .ThenInclude(x => x.Course)
                 .FirstAsync(x => x.Id == id);
         }
+
+        public async Task<UserEntity> GetUserBySlugAsync(string slug)
+        {
+            return await _dbContext.Users
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.Role)
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.Course)
+                .FirstAsync(x => x.Slug == slug);
+        }
     }
 }

@@ -12,6 +12,8 @@ using OnlineTestingSystem.Application.Contracts.Identity;
 using OnlineTestingSystem.Infrastructure.Identity;
 using OnlineTestingSystem.Infrastructure.JwtToken;
 using OnlineTestingSystem.Infrastructure.Upload;
+using Slugify;
+using OnlineTestingSystem.Infrastructure.Slug;
 
 namespace OnlineTestingSystem.Infrastructure
 {
@@ -24,6 +26,9 @@ namespace OnlineTestingSystem.Infrastructure
             services.AddTransient<IJwtTokenService, JwtTokenService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUploadService, UploadService>();
+            services.AddTransient<ISlugService, SlugService>();
+
+            services.AddTransient<ISlugHelper, SlugHelper>();
 
             return services;
         }

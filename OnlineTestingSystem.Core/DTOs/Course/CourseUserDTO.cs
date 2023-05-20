@@ -13,5 +13,6 @@ namespace OnlineTestingSystem.Application.DTOs.Course
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? Section { get; set; }
+        public string Slug { get; set; }
     }
 }

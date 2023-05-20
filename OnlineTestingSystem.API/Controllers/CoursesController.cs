@@ -29,13 +29,22 @@ namespace OnlineTestingSystem.API.Controllers
             return Ok(courses);
         }
 
-        // GET api/<CoursesController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CourseDTO>> Get(int id)
+        // GET api/<CoursesController>/id
+        [HttpGet("id/{id}")]
+        public async Task<ActionResult<CourseDTO>> GetById(int id)
         {
-            var course = await _mediator.Send(new GetCourseRequest() { Id = id});
+            var course = await _mediator.Send(new GetCourseByIdRequest() { Id = id});
             return Ok(course);
         }
+
+        // GET api/<CoursesController>/slug
+        [HttpGet("slug/{slug}")]
+        public async Task<ActionResult<CourseDTO>> GetBySlug(string slug)
+        {
+            var course = await _mediator.Send(new GetCourseBySlugRequest() { Slug = slug });
+            return Ok(course);
+        }
+
 
         // POST api/<CoursesController>
         [HttpPost]

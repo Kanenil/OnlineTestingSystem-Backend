@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnlineTestingSystem.Application.DTOs.User;
+using OnlineTestingSystem.Application.Models.Identity;
 using OnlineTestingSystem.Domain;
 using OnlineTestingSystem.Domain.Identity;
 using System;
@@ -16,6 +17,8 @@ namespace OnlineTestingSystem.Application.Profiles
         {
             CreateMap<UserEntity, UserDTO>()
                 .ForMember(x => x.Courses, opt => opt.MapFrom(x => x.CourseUsers));
+
+            CreateMap<RegistrationRequest, UserEntity>();
 
             CreateMap<UserEntity, UserCourseDTO>();
 

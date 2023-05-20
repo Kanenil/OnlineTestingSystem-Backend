@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace OnlineTestingSystem.Application.Features.Courses.Requests.Queries
 {
-    public class GetCourseRequest : IRequest<CourseDTO>
+    public class GetCourseBySlugRequest : IRequest<CourseDTO>
     {
-        public int Id { get; set; }
+        public string Slug { get; set; }
     }
 }

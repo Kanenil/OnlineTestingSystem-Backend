@@ -51,5 +51,14 @@ namespace OnlineTestingSystem.Presistence.Repositories
             return code;
         }
 
+        public async Task<CourseEntity> GetCourseBySlugAsync(string slug)
+        {
+            return await _dbContext.Courses
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.Role)
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.User)
+                .FirstAsync(x => x.Slug == slug);
+        }
     }
 }

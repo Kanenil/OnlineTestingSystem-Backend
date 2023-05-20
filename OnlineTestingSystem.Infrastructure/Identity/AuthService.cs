@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Linq;
 using OnlineTestingSystem.Application.Constants;
 using OnlineTestingSystem.Application.Contracts.Identity;
 using OnlineTestingSystem.Application.Contracts.Infrastructure;
+using OnlineTestingSystem.Application.Contracts.Persistence;
 using OnlineTestingSystem.Application.Exeptions;
 using OnlineTestingSystem.Application.Models.Identity;
 using OnlineTestingSystem.Domain.Identity;
+using OnlineTestingSystem.Infrastructure.Slug;
 using Org.BouncyCastle.Asn1.Ocsp;
+using Slugify;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,12 +26,18 @@ namespace OnlineTestingSystem.Infrastructure.Identity
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IUsersRepository _usersRepository;
+        private readonly ISlugService _slugService;
+        private readonly IMapper _mapper;
 
-        public AuthService(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IJwtTokenService jwtTokenService)
+        public AuthService(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IJwtTokenService jwtTokenService, IUsersRepository usersRepository, ISlugService slugService, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtTokenService = jwtTokenService;
+            _usersRepository = usersRepository;
+            _slugService = slugService;
+            _mapper = mapper;
         }
 
         public async Task<AuthResponse> GoogleLogin(string googleToken)
@@ -89,6 +99,20 @@ namespace OnlineTestingSystem.Infrastructure.Identity
                         Image = model.Image
                     };
 
+                    var slug = _slugService.GenerateSlug($"{user.FirstName} {user.LastName}");
+
+                    try
+                    {
+                        var userBySlug = await _usersRepository.GetUserBySlugAsync(slug);
+                        slug += $"-{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
+                    }
+                    catch
+                    {
+                        
+                    }
+
+                    user.Slug = slug;
+
                     var resultCreate = await _userManager.CreateAsync(user);
                     if (!resultCreate.Succeeded)
                         throw new BadRequestException("Some thing went wrong, try later.");
@@ -135,47 +159,43 @@ namespace OnlineTestingSystem.Infrastructure.Identity
             var existingUser = await _userManager.FindByNameAsync(request.UserName);
 
             if (existingUser != null)
-            {
                 throw new BadRequestException($"Username '{request.UserName}' already exists.");
-            }
-
-            var user = new UserEntity
-            {
-                Email = request.Email,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                UserName = request.UserName,
-                Image = string.Empty
-            };
+            
+            var user = _mapper.Map<UserEntity>(request);
 
             var existingEmail = await _userManager.FindByEmailAsync(request.Email);
 
-            if (existingEmail == null)
-            {
-                var result = await _userManager.CreateAsync(user, request.Password);
-
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "User");
-
-                    var token = await _jwtTokenService.CreateTokenAsync(user);
-
-                    AuthResponse response = new()
-                    {
-                        Token = token,
-                    };
-
-                    return response;
-                }
-                else
-                {
-                    throw new BadRequestException($"{result.Errors}");
-                }
-            }
-            else
-            {
+            if (existingEmail != null)
                 throw new BadRequestException($"Email {request.Email} already exists.");
+
+            var slug = _slugService.GenerateSlug($"{user.FirstName} {user.LastName}");
+
+            try
+            {
+                var userBySlug = await _usersRepository.GetUserBySlugAsync(slug);
+                slug += $"-{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
             }
+            catch
+            {
+
+            }
+
+            user.Slug = slug;
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+            await _userManager.AddToRoleAsync(user, Roles.User);
+
+            if(!result.Succeeded)
+                throw new BadRequestException($"{result.Errors}");
+
+            var token = await _jwtTokenService.CreateTokenAsync(user);
+
+            AuthResponse response = new()
+            {
+                Token = token,
+            };
+
+            return response;
         }
     }
 }

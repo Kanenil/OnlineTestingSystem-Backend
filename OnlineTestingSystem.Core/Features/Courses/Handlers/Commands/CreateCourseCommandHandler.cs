@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using OnlineTestingSystem.Application.Constants;
+using OnlineTestingSystem.Application.Contracts.Infrastructure;
 using OnlineTestingSystem.Application.Contracts.Persistence;
 using OnlineTestingSystem.Application.DTOs.Course;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Commands;
@@ -20,13 +21,15 @@ namespace OnlineTestingSystem.Application.Features.Courses.Handlers.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ISlugService _slugService;
         private readonly UserManager<UserEntity> _userManager;
 
-        public CreateCourseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<UserEntity> userManager)
+        public CreateCourseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<UserEntity> userManager, ISlugService slugService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
+            _slugService = slugService;
         }
 
         public async Task<BaseCommandResponse> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
@@ -35,6 +38,20 @@ namespace OnlineTestingSystem.Application.Features.Courses.Handlers.Commands
 
             var course = _mapper.Map<CourseEntity>(request.CourseDTO);
             course.Code = await _unitOfWork.CoursesRepository.GenerateCode();
+
+            var slug = _slugService.GenerateSlug(course.Name);
+
+            try
+            {
+                var courseBySlug = await _unitOfWork.CoursesRepository.GetCourseBySlugAsync(slug);
+                slug += $"-{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
+            }
+            catch
+            {
+                
+            }
+
+            course.Slug = slug;
 
             course = await _unitOfWork.CoursesRepository.AddAsync(course);
             await _unitOfWork.Save();

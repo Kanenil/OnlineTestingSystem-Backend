@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnlineTestingSystem.Application.Features.Users.Requests.Queries
 {
-    public class GetUserRequest : IRequest<UserDTO>
+    public class GetUserByIdRequest : IRequest<UserDTO>
     {
         public int Id { get; set; }
     }

@@ -10,6 +10,7 @@ namespace OnlineTestingSystem.Application.DTOs.Course
 {
     public class CourseDTO : BaseDTO<int>, ICourseDTO
     {
+        public string Slug { get; set; }
         public string Code { get; set; }
         public string? Image { get; set; }
         public string Name { get; set; }

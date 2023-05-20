@@ -40,7 +40,13 @@ namespace OnlineTestingSystem.Presistence
                 .IsRequired();
             });
 
+            builder.Entity<UserEntity>()
+                .HasIndex(x => x.Slug)
+                .IsUnique();
 
+            builder.Entity<CourseEntity>()
+               .HasIndex(x => x.Slug)
+               .IsUnique();
 
 
             builder.Entity<CourseUserEntity>(cu =>
