@@ -8,6 +8,7 @@ export class GlobalConstants {
     googleRegister: '/auth/google/register',
     googleLogin: '/auth/google/login',
     courses: '/courses',
+    coursesBySlug: '/courses/slug',
     usersBySlug: '/users/slug',
     usersById: '/users/id',
   };

@@ -1,4 +1,5 @@
 ﻿using Google.Apis.Auth;
+using OnlineTestingSystem.Application.Models.Identity;
 using OnlineTestingSystem.Domain.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace OnlineTestingSystem.Application.Contracts.Infrastructure
     public interface IJwtTokenService
     {
         Task<GoogleJsonWebSignature.Payload> VerifyGoogleTokenAsync(string tokenId);
-        Task<string> CreateTokenAsync(UserEntity user);
+        Task<AuthResponse> CreateTokenAsync(UserEntity user);
+        Task<TokenModel> RefreshTokenAsync(string? accessToken, string? refreshToken);
     }
 }

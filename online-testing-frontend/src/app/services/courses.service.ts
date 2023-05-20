@@ -11,7 +11,7 @@ import {GlobalConstants} from "../GlobalConstants";
   providedIn: 'root'
 })
 export class CoursesService {
-  constructor(private http: HttpClient, private localStore: LocalStorageService, private errorService: ErrorService) {
+  constructor(private http: HttpClient) {
   }
 
   courses: ICourse[] = []
@@ -23,6 +23,13 @@ export class CoursesService {
           this.courses = resp;
           return resp;
         }),
+        retry(2)
+      );
+  }
+
+  getBySlug(slug: string) {
+    return this.http.get<ICourse>(`${environment.apiUrl}${GlobalConstants.routes.coursesBySlug}/${slug}`)
+      .pipe(
         retry(2)
       );
   }

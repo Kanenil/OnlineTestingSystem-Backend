@@ -62,5 +62,5 @@ module.exports = {
         scaleIn: 'scaleIn .35s ease-in-out'
       }
     },
-  }, plugins: [],
+  }, plugins: [require('@tailwindcss/forms')],
 }

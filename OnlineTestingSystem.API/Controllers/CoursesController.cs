@@ -5,6 +5,7 @@ using OnlineTestingSystem.Application.DTOs.Course;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Commands;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Queries;
 using OnlineTestingSystem.Application.Responses;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -53,7 +54,7 @@ namespace OnlineTestingSystem.API.Controllers
         [Authorize]
         public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CourseCreateDTO course)
         {
-            string email = User.Claims.First().Value;
+            string email = User.FindFirstValue(ClaimTypes.Email);
             var command = new CreateCourseCommand { CourseDTO = course, Email = email };
             var response = await _mediator.Send(command);
             return Ok(response);

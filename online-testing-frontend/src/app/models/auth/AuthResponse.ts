@@ -1,3 +1,6 @@
+import {ITokens} from "./Tokens";
+
 export interface IAuthResponse {
-  token: string
+  tokens: ITokens,
+  expires: string
 }

@@ -34,24 +34,26 @@ builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
     .AddEntityFrameworkStores<OnlineTestingDbContext>()
     .AddDefaultTokenProviders();
 
-var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<String>("JWTSecretKey")));
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(cfg =>
 {
     cfg.RequireHttpsMetadata = false;
     cfg.SaveToken = true;
     cfg.TokenValidationParameters = new TokenValidationParameters()
     {
-        IssuerSigningKey = signinKey,
-        ValidateAudience = false,
-        ValidateIssuer = false,
+        ValidateIssuer = true,
+        ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.Zero
+        ClockSkew = TimeSpan.Zero,
+
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
 });
 
@@ -63,7 +65,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("CorsPolicy",
-        builder => builder.AllowAnyOrigin()
+        corsBuilder => corsBuilder.WithOrigins(builder.Configuration["FrontEndURL"])
         .AllowAnyMethod()
         .AllowAnyHeader());
 });

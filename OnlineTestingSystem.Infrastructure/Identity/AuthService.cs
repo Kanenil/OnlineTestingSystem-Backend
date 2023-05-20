@@ -71,7 +71,7 @@ namespace OnlineTestingSystem.Infrastructure.Identity
                 throw new BadRequestException($"Account is banned until {time.ToString()}.");
 
             var token = await _jwtTokenService.CreateTokenAsync(user);
-            return new AuthResponse() { Token = token };
+            return token;
         }
 
         public async Task<AuthResponse> GoogleRegister(GoogleRegister model)
@@ -125,7 +125,7 @@ namespace OnlineTestingSystem.Infrastructure.Identity
             }
 
             var token = await _jwtTokenService.CreateTokenAsync(user);
-            return new AuthResponse() { Token = token };
+            return token;
         }
 
         public async Task<AuthResponse> Login(AuthRequest request)
@@ -146,12 +146,7 @@ namespace OnlineTestingSystem.Infrastructure.Identity
 
             var token = await _jwtTokenService.CreateTokenAsync(user);
 
-            AuthResponse response = new()
-            {
-                Token = token,
-            };
-
-            return response;
+            return token;
         }
 
         public async Task<AuthResponse> Register(RegistrationRequest request)
@@ -190,12 +185,14 @@ namespace OnlineTestingSystem.Infrastructure.Identity
 
             var token = await _jwtTokenService.CreateTokenAsync(user);
 
-            AuthResponse response = new()
-            {
-                Token = token,
-            };
+            return token;
+        }
+        public async Task<TokenModel> RefreshToken(TokenModel model)
+        {
+            if (model is null)
+                throw new BadRequestException("Invalid client request");
 
-            return response;
+            return await _jwtTokenService.RefreshTokenAsync(model.AccessToken, model.RefreshToken);
         }
     }
 }

@@ -12,7 +12,7 @@ import {Title} from "@angular/platform-browser";
 export class UserPageComponent {
   user: IUser | null
   backgroundImage: string = "/assets/default-backgrounds/default-background-1.jpg";
-
+  isLoading = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -26,8 +26,10 @@ export class UserPageComponent {
 
       const slug = params.get('slug');
       if (slug) {
+        this.isLoading = true;
         this.usersService.getBySlug(slug).subscribe(user => {
           this.user = user;
+          this.isLoading = false;
           titleService.setTitle(`Smart Test - ${this.user.firstName} ${this.user.lastName}`)
         })
       } else {

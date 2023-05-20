@@ -22,6 +22,9 @@ namespace OnlineTestingSystem.Domain.Identity
         [Required, MaxLength(255)]
         public string Slug { get; set; }
 
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
+
         public virtual ICollection<UserRoleEntity> UserRoles { get; set; }
         public virtual ICollection<CourseUserEntity> CourseUsers { get; set; }
 

@@ -25,6 +25,9 @@ export class ErrorService {
     if (!navigator.onLine)
       return 'No Internet Connection'
 
+    if(error.status === 0)
+      return 'No Connection to Backend'
+
     if (error.error.ErrorMessage.includes(BackendErrors.GOOGLE_REGISTER)) {
       this.modalService.close();
 

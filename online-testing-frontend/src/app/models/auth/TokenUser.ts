@@ -1,6 +1,4 @@
 export interface ITokenUser {
-  slug: string,
-  name: string,
-  email: string,
-  image: string
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string,
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": string,
 }

@@ -14,7 +14,7 @@ export class UnLoginedGuard {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('tokens')) {
       return false;
     }
 

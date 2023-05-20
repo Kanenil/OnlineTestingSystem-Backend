@@ -39,5 +39,11 @@ namespace OnlineTestingSystem.API.Controllers
             return Ok(await _authenticationService.GoogleRegister(model));
         }
 
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult> RefreshToken(TokenModel model)
+        {
+            return Ok(await _authenticationService.RefreshToken(model));
+        }
+
     }
 }

@@ -37,6 +37,7 @@ import { UserCourseListComponent } from './components/courses/user-course-list/u
 import { MaxLenghtDotsPipe } from './pipes/max-lenght-dots.pipe';
 import { UserCourseComponent } from './components/courses/user-course/user-course.component';
 import { CoursesPageComponent } from './pages/courses/courses-page/courses-page.component';
+import { CoursePageComponent } from './pages/courses/course-page/course-page.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { CoursesPageComponent } from './pages/courses/courses-page/courses-page.
     MaxLenghtDotsPipe,
     UserCourseComponent,
     CoursesPageComponent,
+    CoursePageComponent,
   ],
   imports: [
     BrowserModule,

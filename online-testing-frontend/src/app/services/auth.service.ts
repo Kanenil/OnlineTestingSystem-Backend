@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, catchError, NEVER, Observable, retry, Subject, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, NEVER, Observable, retry, tap, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {LocalStorageService} from "./local-storage.service";
@@ -12,6 +12,7 @@ import {IUser} from "../models/users/User";
 import {IAuthResponse} from "../models/auth/AuthResponse";
 import {IRegisterUser} from "../models/auth/RegisterUser";
 import {IFinishGoogleRegistration} from "../models/auth/FinishGoogleRegistration";
+import {ClaimTypes} from "../enums/claim-types";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,6 @@ import {IFinishGoogleRegistration} from "../models/auth/FinishGoogleRegistration
 export class AuthService {
 
   user$=new BehaviorSubject<IUser | null>(null);
-  //user = this.user$.asObservable()
 
   constructor(
     private http: HttpClient,
@@ -27,11 +27,28 @@ export class AuthService {
     private notificationService: NotificationService,
     private usersService : UsersService
   ) {
-    const token = this.localStore.getData('token');
-    if(token) {
-      const decodeToken = this.decodeToken(token)
+    this.loadUser();
+  }
+
+  loadUser() {
+    const expires = this.localStore.getData('tokensExpires');
+
+    if(expires) {
+      let now = new Date();
+      let expiresDate = new Date(expires);
+
+      if(now.getTime() > expiresDate.getTime()){
+        this.localStore.removeData('tokensExpires');
+        this.localStore.removeData('tokens');
+      }
+    }
+
+    const tokens = this.localStore.getData('tokens');
+    const model = JSON.parse(tokens || '{}');
+    if(model.accessToken) {
+      const decodeToken = this.decodeToken(model.accessToken)
       if(decodeToken) {
-        this.usersService.getBySlug(decodeToken.slug).subscribe(user=>{
+        this.usersService.getById(decodeToken[ClaimTypes.id]).subscribe(user=>{
           this.user$.next(user);
         })
       }
@@ -92,16 +109,18 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.localStore.removeData('tokens');
+    this.localStore.removeData('tokensExpires');
     this.user$.next(null);
-    //this.user = null;
   }
 
   private saveUser(response: IAuthResponse):IAuthResponse {
-    localStorage.setItem('token', response.token);
-    const decodeToken = this.decodeToken(response.token);
+    this.localStore.saveData('tokens', JSON.stringify(response.tokens));
+    this.localStore.saveData('tokensExpires', response.expires);
+
+    const decodeToken = this.decodeToken(response.tokens.accessToken);
     if(decodeToken) {
-      this.usersService.getBySlug(decodeToken.slug).subscribe(user=>{
+      this.usersService.getById(decodeToken[ClaimTypes.id]).subscribe(user=>{
         this.user$.next(user);
       })
     }
