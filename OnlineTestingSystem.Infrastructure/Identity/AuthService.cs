@@ -26,16 +26,16 @@ namespace OnlineTestingSystem.Infrastructure.Identity
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly IJwtTokenService _jwtTokenService;
-        private readonly IUsersRepository _usersRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ISlugService _slugService;
         private readonly IMapper _mapper;
 
-        public AuthService(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IJwtTokenService jwtTokenService, IUsersRepository usersRepository, ISlugService slugService, IMapper mapper)
+        public AuthService(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IJwtTokenService jwtTokenService, IUnitOfWork unitOfWork, ISlugService slugService, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtTokenService = jwtTokenService;
-            _usersRepository = usersRepository;
+            _unitOfWork = unitOfWork;
             _slugService = slugService;
             _mapper = mapper;
         }
@@ -103,7 +103,7 @@ namespace OnlineTestingSystem.Infrastructure.Identity
 
                     try
                     {
-                        var userBySlug = await _usersRepository.GetUserBySlugAsync(slug);
+                        var userBySlug = await _unitOfWork.UsersRepository.GetUserBySlugAsync(slug);
                         slug += $"-{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
                     }
                     catch
@@ -151,23 +151,19 @@ namespace OnlineTestingSystem.Infrastructure.Identity
 
         public async Task<AuthResponse> Register(RegistrationRequest request)
         {
-            var existingUser = await _userManager.FindByNameAsync(request.UserName);
+            var existingUser = await _userManager.FindByEmailAsync(request.Email);
 
             if (existingUser != null)
-                throw new BadRequestException($"Username '{request.UserName}' already exists.");
+                throw new BadRequestException($"Email '{request.Email}' already exists.");
             
             var user = _mapper.Map<UserEntity>(request);
 
-            var existingEmail = await _userManager.FindByEmailAsync(request.Email);
-
-            if (existingEmail != null)
-                throw new BadRequestException($"Email {request.Email} already exists.");
 
             var slug = _slugService.GenerateSlug($"{user.FirstName} {user.LastName}");
 
             try
             {
-                var userBySlug = await _usersRepository.GetUserBySlugAsync(slug);
+                var userBySlug = await _unitOfWork.UsersRepository.GetUserBySlugAsync(slug);
                 slug += $"-{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
             }
             catch

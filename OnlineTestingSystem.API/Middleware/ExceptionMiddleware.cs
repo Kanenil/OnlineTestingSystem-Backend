@@ -34,15 +34,18 @@ namespace OnlineTestingSystem.API.Middleware
 
             switch (exception)
             {
-                case BadRequestException badRequestException:
+                case BadRequestException:
                     statusCode = HttpStatusCode.BadRequest;
                     break;
                 case ValidationException validationException:
                     statusCode = HttpStatusCode.BadRequest;
                     result = JsonConvert.SerializeObject(validationException.Errors);
                     break;
-                case NotFoundException notFoundException:
+                case NotFoundException:
                     statusCode = HttpStatusCode.NotFound;
+                    break;
+                case UnAuthorizedExeption:
+                    statusCode = HttpStatusCode.Unauthorized;
                     break;
                 default:
                     break;

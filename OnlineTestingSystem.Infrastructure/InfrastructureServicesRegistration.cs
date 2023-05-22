@@ -25,6 +25,7 @@ namespace OnlineTestingSystem.Infrastructure
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IJwtTokenService, JwtTokenService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IUploadService, UploadService>();
             services.AddTransient<ISlugService, SlugService>();
 

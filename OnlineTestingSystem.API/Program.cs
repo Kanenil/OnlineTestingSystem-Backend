@@ -11,6 +11,8 @@ using OnlineTestingSystem.Presistence;
 using System;
 using System.Text;
 
+var MyCorsPolicy = "MyCorsPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -62,12 +64,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(o =>
+builder.Services.AddCors(options =>
 {
-    o.AddPolicy("CorsPolicy",
-        corsBuilder => corsBuilder.WithOrigins(builder.Configuration["FrontEndURL"])
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+    options.AddPolicy(name: MyCorsPolicy,
+                      policy =>
+                      {
+                          policy.WithOrigins(builder.Configuration["FrontEndURL"]).AllowAnyMethod().AllowAnyHeader();
+                      });
 });
 
 var app = builder.Build();
@@ -81,10 +84,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(MyCorsPolicy);
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("CorsPolicy");
 
 app.MapControllers();
 app.SeedData();

@@ -56,7 +56,7 @@ namespace OnlineTestingSystem.Application.Features.Courses.Handlers.Commands
             course = await _unitOfWork.CoursesRepository.AddAsync(course);
             await _unitOfWork.Save();
 
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByNameAsync(request.Username);
             var role = await _unitOfWork.GetRoleAsync(CourseRoles.Owner);
             await _unitOfWork.CourseUserRepository.AddAsync(new() { CourseId = course.Id, UserId = user.Id, RoleId = role.Id });
             await _unitOfWork.Save();

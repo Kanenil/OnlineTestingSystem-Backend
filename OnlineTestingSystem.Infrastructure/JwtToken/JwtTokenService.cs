@@ -34,8 +34,8 @@ namespace OnlineTestingSystem.Infrastructure.JwtToken
             var roles = await _userManager.GetRolesAsync(user);
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("id", user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
             };
 
             foreach (var userRole in roles)
@@ -83,7 +83,7 @@ namespace OnlineTestingSystem.Infrastructure.JwtToken
         {
             var principal = GetPrincipalFromExpiredToken(accessToken);
             if (principal == null)
-                throw new BadRequestException("Invalid access token or refresh token");
+                throw new UnAuthorizedExeption("Invalid access token or refresh token");
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -94,7 +94,7 @@ namespace OnlineTestingSystem.Infrastructure.JwtToken
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc))
-                throw new BadRequestException("Invalid access token or refresh token");
+                throw new UnAuthorizedExeption("Invalid access token or refresh token");
 
             var newAccessToken = CreateToken(principal.Claims.ToList());
             var newRefreshToken = GenerateRefreshToken();

@@ -11,5 +11,6 @@ namespace OnlineTestingSystem.Application.Contracts.Persistence
     public interface IUsersRepository : IGenericRepository<UserEntity>
     {
         public Task<UserEntity> GetUserBySlugAsync(string slug);
+        public Task<UserEntity> GetUserByUsernameAsync(string username);
     }
 }

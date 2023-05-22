@@ -18,7 +18,8 @@ namespace OnlineTestingSystem.Application.Profiles
             CreateMap<UserEntity, UserDTO>()
                 .ForMember(x => x.Courses, opt => opt.MapFrom(x => x.CourseUsers));
 
-            CreateMap<RegistrationRequest, UserEntity>();
+            CreateMap<RegistrationRequest, UserEntity>()
+                .ForMember(x=>x.UserName, opt=>opt.MapFrom(x=>x.Email));
 
             CreateMap<UserEntity, UserCourseDTO>();
 

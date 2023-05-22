@@ -9,6 +9,6 @@ namespace OnlineTestingSystem.Application.Contracts.Persistence
 {
     public interface ICourseUserRepository : IGenericRepository<CourseUserEntity>
     {
-
+        public Task<CourseUserEntity> GetCourseByUserIdAndCourseIdAsync(int userId, int courseId);
     }
 }

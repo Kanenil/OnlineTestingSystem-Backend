@@ -51,18 +51,7 @@ namespace OnlineTestingSystem.Presistence
 
             builder.Entity<CourseUserEntity>(cu =>
             {
-                cu.HasKey(cu => new { cu.UserId, cu.CourseId });
-
-                cu.HasOne(ur => ur.User)
-                    .WithMany(r => r.CourseUsers)
-                    .HasForeignKey(r => r.UserId)
-                    .IsRequired();
-
-                cu.HasOne(ur => ur.Course)
-                    .WithMany(r => r.CourseUsers)
-                    .HasForeignKey(r => r.CourseId)
-                    .IsRequired();
-                
+                cu.HasKey(b => new { b.UserId, b.CourseId });
             });
 
 

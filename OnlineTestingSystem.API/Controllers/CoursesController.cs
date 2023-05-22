@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using OnlineTestingSystem.API.Middleware;
 using OnlineTestingSystem.Application.DTOs.Course;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Commands;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Queries;
@@ -24,6 +26,7 @@ namespace OnlineTestingSystem.API.Controllers
 
         // GET: api/<CoursesController>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CourseDTO>>> Get()
         {
             var courses = await _mediator.Send(new GetCoursesListRequest());
@@ -32,6 +35,8 @@ namespace OnlineTestingSystem.API.Controllers
 
         // GET api/<CoursesController>/id
         [HttpGet("id/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
         public async Task<ActionResult<CourseDTO>> GetById(int id)
         {
             var course = await _mediator.Send(new GetCourseByIdRequest() { Id = id});
@@ -40,6 +45,8 @@ namespace OnlineTestingSystem.API.Controllers
 
         // GET api/<CoursesController>/slug
         [HttpGet("slug/{slug}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
         public async Task<ActionResult<CourseDTO>> GetBySlug(string slug)
         {
             var course = await _mediator.Send(new GetCourseBySlugRequest() { Slug = slug });
@@ -50,12 +57,38 @@ namespace OnlineTestingSystem.API.Controllers
         // POST api/<CoursesController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDeatils))]
         [Authorize]
         public async Task<ActionResult<BaseCommandResponse>> Post([FromBody] CourseCreateDTO course)
         {
-            string email = User.FindFirstValue(ClaimTypes.Email);
-            var command = new CreateCourseCommand { CourseDTO = course, Email = email };
+            string username = User.FindFirstValue(ClaimTypes.Name);
+            var command = new CreateCourseCommand { CourseDTO = course, Username = username };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        // POST api/<CoursesController>/join
+        [HttpPost("join/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDeatils))]
+        [Authorize]
+        public async Task<ActionResult<BaseCommandResponse>> Join(int id)
+        {
+            string username = User.FindFirstValue(ClaimTypes.Name);
+            var command = new JoinCourseCommand { CourseId = id, Username = username };
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        // POST api/<CoursesController>/leave
+        [HttpPost("leave/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDeatils))]
+        [Authorize]
+        public async Task<ActionResult<BaseCommandResponse>> Leave(int id)
+        {
+            string username = User.FindFirstValue(ClaimTypes.Name);
+            var command = new LeaveCourseCommand { CourseId = id, Username = username };
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -63,8 +96,7 @@ namespace OnlineTestingSystem.API.Controllers
         // PUT api/<CoursesController>/5
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
         [Authorize]
         public async Task<ActionResult> Put([FromBody] CourseDTO course)
         {
@@ -76,8 +108,7 @@ namespace OnlineTestingSystem.API.Controllers
         // DELETE api/<CoursesController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
         [Authorize]
         public async Task<ActionResult> Delete(int id)
         {

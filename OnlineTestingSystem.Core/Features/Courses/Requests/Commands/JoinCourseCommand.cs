@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using OnlineTestingSystem.Application.DTOs.Course;
 using OnlineTestingSystem.Application.Responses;
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace OnlineTestingSystem.Application.Features.Courses.Requests.Commands
 {
-    public class CreateCourseCommand : IRequest<BaseCommandResponse>
+    public class JoinCourseCommand : IRequest<BaseCommandResponse>
     {
-        public CourseCreateDTO CourseDTO { get; set; }
         public string Username { get; set; }
+        public int CourseId { get; set; }
     }
 }

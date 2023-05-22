@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using OnlineTestingSystem.API.Middleware;
 using OnlineTestingSystem.Application.DTOs.User;
 using OnlineTestingSystem.Application.Features.Users.Requests.Queries;
 
@@ -19,6 +20,8 @@ namespace OnlineTestingSystem.API.Controllers
 
         // GET api/<UsersController>/id
         [HttpGet("id/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
         public async Task<ActionResult<UserDTO>> GetById(int id)
         {
             var user = await _mediator.Send(new GetUserByIdRequest() { Id = id });
@@ -27,6 +30,8 @@ namespace OnlineTestingSystem.API.Controllers
 
         // GET api/<UsersController>/slug
         [HttpGet("slug/{slug}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
         public async Task<ActionResult<UserDTO>> GetBySlug(string slug)
         {
             var user = await _mediator.Send(new GetUserBySlugRequest() { Slug = slug });
