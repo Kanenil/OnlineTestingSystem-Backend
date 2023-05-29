@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineTestingSystem.Application.Contracts.Infrastructure;
+using OnlineTestingSystem.Application.Models.Upload;
 
 namespace OnlineTestingSystem.API.Controllers
 {
@@ -19,9 +20,9 @@ namespace OnlineTestingSystem.API.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task Upload(IFormFile file)
+        public async Task<ActionResult<UploadFileResult>> Upload(IFormFile file)
         {
-            await _uploadService.UploadFileAsync(file);
+            return Ok(await _uploadService.UploadFileAsync(file));
         }
 
     }

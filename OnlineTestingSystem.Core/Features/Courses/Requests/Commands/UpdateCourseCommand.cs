@@ -10,6 +10,6 @@ namespace OnlineTestingSystem.Application.Features.Courses.Requests.Commands
 {
     public class UpdateCourseCommand : IRequest<Unit>
     {
-        public CourseDTO CourseDTO { get; set; }
+        public UpdateCourseDTO CourseDTO { get; set; }
     }
 }

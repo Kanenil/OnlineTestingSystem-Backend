@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D21594D6-5724-40C0-A047-0178756265E2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4D41AAAC-EA5F-44E8-8A5D-248C87A55BEB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineTestingSystem.Application", "OnlineTestingSystem.Core\OnlineTestingSystem.Application.csproj", "{EE317F28-F0B0-4B8A-BA9D-1E0968BC8036}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineTestingSystem.API", "OnlineTestingSystem.API\OnlineTestingSystem.API.csproj", "{A18E9D43-7A6E-4F2B-8BD5-ABC145153186}"
@@ -17,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{306205DA-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F5FE85D2-6D9F-45A3-9D58-248F1B6E372D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineTestingSystem.Domain", "OnlineTestingSystem.Domain\OnlineTestingSystem.Domain.csproj", "{9F42B5B0-AB52-4145-9EED-750C0D7F5ED0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineTestingSystem.Domain", "OnlineTestingSystem.Domain\OnlineTestingSystem.Domain.csproj", "{9F42B5B0-AB52-4145-9EED-750C0D7F5ED0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineTestingSystem.Presistence", "OnlineTestingSystem.Presistence\OnlineTestingSystem.Presistence.csproj", "{1172F79F-E8A0-481C-8D9A-B77D9913627D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineTestingSystem.Presistence", "OnlineTestingSystem.Presistence\OnlineTestingSystem.Presistence.csproj", "{1172F79F-E8A0-481C-8D9A-B77D9913627D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineTestingSystem.Infrastructure", "OnlineTestingSystem.Infrastructure\OnlineTestingSystem.Infrastructure.csproj", "{B6C40E70-7594-478A-9401-A99644039DC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineTestingSystem.Infrastructure", "OnlineTestingSystem.Infrastructure\OnlineTestingSystem.Infrastructure.csproj", "{B6C40E70-7594-478A-9401-A99644039DC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

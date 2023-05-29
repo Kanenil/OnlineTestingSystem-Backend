@@ -15,6 +15,12 @@ namespace OnlineTestingSystem.Presistence.Repositories
         {
         }
 
+        public override async Task DeleteAsync(CourseEntity entity)
+        {
+            var data = await GetAsync(entity.Id);
+            data.IsDeleted = true;
+        }
+
         public override async Task<CourseEntity> GetAsync(int id)
         {
             return await _dbContext.Courses
@@ -33,6 +39,7 @@ namespace OnlineTestingSystem.Presistence.Repositories
                     .ThenInclude(x=>x.Role)
                 .Include(x => x.CourseUsers)
                     .ThenInclude(x => x.User)
+                .OrderBy(x => x.Id)
                 .ToListAsync();
         }
 
@@ -59,6 +66,18 @@ namespace OnlineTestingSystem.Presistence.Repositories
                 .Include(x => x.CourseUsers)
                     .ThenInclude(x => x.User)
                 .FirstAsync(x => x.Slug == slug);
+        }
+
+        public IQueryable<CourseEntity> GetAllAsQueryable()
+        {
+            return _dbContext
+                .Courses
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.Role)
+                .Include(x => x.CourseUsers)
+                    .ThenInclude(x => x.User)
+                .OrderBy(x => x.Id)
+                .AsQueryable();
         }
     }
 }

@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OnlineTestingSystem.API.Middleware;
+using OnlineTestingSystem.Application.Constants;
 using OnlineTestingSystem.Application.DTOs.Course;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Commands;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Queries;
+using OnlineTestingSystem.Application.Models.Course;
 using OnlineTestingSystem.Application.Responses;
 using System.Security.Claims;
 
@@ -24,13 +26,23 @@ namespace OnlineTestingSystem.API.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/<CoursesController>
-        [HttpGet]
+        // GET: api/<CoursesController>/all
+        [HttpGet("all")]
+        [Authorize(Roles = Roles.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<CourseDTO>>> Get()
+        public async Task<ActionResult<List<CourseDTO>>> GetAll()
         {
             var courses = await _mediator.Send(new GetCoursesListRequest());
             return Ok(courses);
+        }
+
+        // GET: api/<CoursesController>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<CourseSearchResult>> Get([FromQuery] CourseSearch model)
+        {
+            var result = await _mediator.Send(new GetPaginatedCoursesListRequest() { Search = model });
+            return Ok(result);
         }
 
         // GET api/<CoursesController>/id
@@ -98,7 +110,7 @@ namespace OnlineTestingSystem.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
         [Authorize]
-        public async Task<ActionResult> Put([FromBody] CourseDTO course)
+        public async Task<ActionResult> Put([FromBody] UpdateCourseDTO course)
         {
             var command = new UpdateCourseCommand { CourseDTO = course };
             await _mediator.Send(command);

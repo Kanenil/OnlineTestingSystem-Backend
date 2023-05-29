@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineTestingSystem.Application.Contracts.Identity;
 using OnlineTestingSystem.Application.DTOs.User;
+using OnlineTestingSystem.Application.Models.Account;
 using System.Security.Claims;
 
 namespace OnlineTestingSystem.API.Controllers
@@ -26,7 +27,15 @@ namespace OnlineTestingSystem.API.Controllers
             return Ok(await _accountService.Profile(name));
         }
 
-        
+        [HttpPost("edit")]
+        public async Task<ActionResult<UserDTO>> Edit(EditProfile model)
+        {
+            string name = User.FindFirstValue(ClaimTypes.Name);
+            await _accountService.EditProfile(name, model);
+            return NoContent();
+        }
+
+
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {

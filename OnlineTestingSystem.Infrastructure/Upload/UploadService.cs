@@ -3,6 +3,8 @@ using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
 using OnlineTestingSystem.Application.Constants;
 using OnlineTestingSystem.Application.Contracts.Infrastructure;
+using OnlineTestingSystem.Application.Exeptions;
+using OnlineTestingSystem.Application.Models.Upload;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,23 @@ namespace OnlineTestingSystem.Infrastructure.Upload
             _client = client;
         }
 
-        public async Task<string> UploadFileAsync(IFormFile file)
+        public async Task RemoveFileAsync(string fileUrl)
+        {
+            Uri uri = new Uri(fileUrl);
+            string filename = uri.Segments[1];
+
+            var request = new DeleteObjectRequest
+            {
+                BucketName = AmazonS3.BasketName,
+                Key = filename,
+            };
+            var response = await _client.DeleteObjectAsync(request);
+
+            if (response.HttpStatusCode != System.Net.HttpStatusCode.NoContent)
+                throw new Exception("While deleting file, something went wrong!");
+        }
+
+        public async Task<UploadFileResult> UploadFileAsync(IFormFile file)
         {
             var fileName =  String.Concat(Path.GetRandomFileName(), Path.GetExtension(file.FileName));
 
@@ -36,7 +54,10 @@ namespace OnlineTestingSystem.Infrastructure.Upload
             if (response.HttpStatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception("While saving file, something went wrong!");
 
-            return $"https://${AmazonS3.BasketName}.s3.${AmazonS3.Region}.amazonaws.com/${fileName}";
+            return new()
+            {
+                FileUrl = $"https://{AmazonS3.BasketName}.s3.{AmazonS3.Region}.amazonaws.com/{fileName}"
+            };
         }
 
     }

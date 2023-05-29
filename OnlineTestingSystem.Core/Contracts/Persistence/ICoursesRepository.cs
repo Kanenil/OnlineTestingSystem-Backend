@@ -11,5 +11,6 @@ namespace OnlineTestingSystem.Application.Contracts.Persistence
     {
         public Task<CourseEntity> GetCourseBySlugAsync(string slug);
         public Task<string> GenerateCode();
+        public IQueryable<CourseEntity> GetAllAsQueryable();
     }
 }

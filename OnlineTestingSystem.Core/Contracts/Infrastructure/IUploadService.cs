@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using OnlineTestingSystem.Application.Models.Upload;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace OnlineTestingSystem.Application.Contracts.Infrastructure
 {
     public interface IUploadService
     {
-        Task<string> UploadFileAsync(IFormFile file);
+        Task<UploadFileResult> UploadFileAsync(IFormFile file);
+        Task RemoveFileAsync(string fileUrl);
     }
 }

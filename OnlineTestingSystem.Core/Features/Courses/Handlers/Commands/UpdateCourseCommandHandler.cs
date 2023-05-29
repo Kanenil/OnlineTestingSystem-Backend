@@ -29,7 +29,7 @@ namespace OnlineTestingSystem.Application.Features.Courses.Handlers.Commands
                 throw new NotFoundException(nameof(course), request.CourseDTO.Id);
 
             _mapper.Map(request.CourseDTO, course);
-
+            
             await _unitOfWork.CoursesRepository.UpdateAsync(course);
             await _unitOfWork.Save();
 
