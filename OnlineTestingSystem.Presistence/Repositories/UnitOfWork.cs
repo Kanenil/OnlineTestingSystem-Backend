@@ -16,6 +16,7 @@ namespace OnlineTestingSystem.Presistence.Repositories
         private ICoursesRepository _coursesRepository;
         private ICourseUserRepository _courseUserRepository;
         private IUsersRepository _usersRepository;
+        private ITestsRepository _testsRepository;
 
         public UnitOfWork(OnlineTestingDbContext context)
         {
@@ -30,6 +31,9 @@ namespace OnlineTestingSystem.Presistence.Repositories
 
         public IUsersRepository UsersRepository =>
             _usersRepository ??= new UsersRepository(_context);
+
+        public ITestsRepository TestsRepository =>
+           _testsRepository ??= new TestsRepository(_context);
 
         public async Task<CourseRoleEntity> GetRoleAsync(string name)
         {

@@ -12,6 +12,7 @@ namespace OnlineTestingSystem.Application.Contracts.Persistence
         ICoursesRepository CoursesRepository { get; }
         ICourseUserRepository CourseUserRepository { get; }
         IUsersRepository UsersRepository { get; }
+        ITestsRepository TestsRepository { get; }
         Task<CourseRoleEntity> GetRoleAsync(string name);
         Task Save();
     }

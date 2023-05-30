@@ -5,25 +5,24 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineTestingSystem.Application.Contracts.Infrastructure;
 using OnlineTestingSystem.Application.Models.Upload;
 
-namespace OnlineTestingSystem.API.Controllers
+namespace OnlineTestingSystem.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class UploadController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    public class UploadController : ControllerBase
+    private readonly IUploadService _uploadService;
+
+    public UploadController(IUploadService uploadService)
     {
-        private readonly IUploadService _uploadService;
-
-        public UploadController(IUploadService uploadService)
-        {
-            _uploadService = uploadService;
-        }
-
-        [HttpPost("upload")]
-        public async Task<ActionResult<UploadFileResult>> Upload(IFormFile file)
-        {
-            return Ok(await _uploadService.UploadFileAsync(file));
-        }
-
+        _uploadService = uploadService;
     }
+
+    [HttpPost("upload")]
+    public async Task<ActionResult<UploadFileResult>> Upload(IFormFile file)
+    {
+        return Ok(await _uploadService.UploadFileAsync(file));
+    }
+
 }

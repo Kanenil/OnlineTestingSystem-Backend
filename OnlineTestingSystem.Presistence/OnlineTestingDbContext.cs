@@ -60,5 +60,8 @@ namespace OnlineTestingSystem.Presistence
         public DbSet<CourseEntity> Courses { get; set; }
         public DbSet<CourseRoleEntity> CourseRoles { get; set; }
         public DbSet<CourseUserEntity> CourseUsers { get; set; }
+        public DbSet<TestEntity> Tests { get; set; }
+        public DbSet<QuestionEntity> Questions { get; set; }
+        public DbSet<AnswerEntity> Answers { get; set; }
     }
 }

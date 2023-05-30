@@ -15,57 +15,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineTestingSystem.Application.Features.Courses.Handlers.Commands
+namespace OnlineTestingSystem.Application.Features.Courses.Handlers.Commands;
+
+public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, BaseCommandResponse>
 {
-    public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, BaseCommandResponse>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+    private readonly ISlugService _slugService;
+    private readonly UserManager<UserEntity> _userManager;
+
+    public CreateCourseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<UserEntity> userManager, ISlugService slugService)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ISlugService _slugService;
-        private readonly UserManager<UserEntity> _userManager;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _userManager = userManager;
+        _slugService = slugService;
+    }
 
-        public CreateCourseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, UserManager<UserEntity> userManager, ISlugService slugService)
+    public async Task<BaseCommandResponse> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
+    {
+        var response = new BaseCommandResponse();
+
+        var course = _mapper.Map<CourseEntity>(request.CourseDTO);
+        course.Code = await _unitOfWork.CoursesRepository.GenerateCode();
+
+        var slug = _slugService.GenerateSlug(course.Name);
+
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _userManager = userManager;
-            _slugService = slugService;
+            var courseBySlug = await _unitOfWork.CoursesRepository.GetCourseBySlugAsync(slug);
+            slug += $"-{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
+        }
+        catch
+        {
+            
         }
 
-        public async Task<BaseCommandResponse> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
-        {
-            var response = new BaseCommandResponse();
+        course.Slug = slug;
 
-            var course = _mapper.Map<CourseEntity>(request.CourseDTO);
-            course.Code = await _unitOfWork.CoursesRepository.GenerateCode();
+        course = await _unitOfWork.CoursesRepository.AddAsync(course);
+        await _unitOfWork.Save();
 
-            var slug = _slugService.GenerateSlug(course.Name);
+        var user = await _userManager.FindByNameAsync(request.Username);
+        var role = await _unitOfWork.GetRoleAsync(CourseRoles.Owner);
+        await _unitOfWork.CourseUserRepository.AddAsync(new() { CourseId = course.Id, UserId = user.Id, RoleId = role.Id });
+        await _unitOfWork.Save();
 
-            try
-            {
-                var courseBySlug = await _unitOfWork.CoursesRepository.GetCourseBySlugAsync(slug);
-                slug += $"-{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
-            }
-            catch
-            {
-                
-            }
+        response.Success = true;
+        response.Message = "Creation Successful";
+        response.Id = course.Id;
 
-            course.Slug = slug;
-
-            course = await _unitOfWork.CoursesRepository.AddAsync(course);
-            await _unitOfWork.Save();
-
-            var user = await _userManager.FindByNameAsync(request.Username);
-            var role = await _unitOfWork.GetRoleAsync(CourseRoles.Owner);
-            await _unitOfWork.CourseUserRepository.AddAsync(new() { CourseId = course.Id, UserId = user.Id, RoleId = role.Id });
-            await _unitOfWork.Save();
-
-            response.Success = true;
-            response.Message = "Creation Successful";
-            response.Id = course.Id;
-
-            return response;
-        }
+        return response;
     }
 }

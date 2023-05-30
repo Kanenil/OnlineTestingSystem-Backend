@@ -37,6 +37,6 @@ namespace OnlineTestingSystem.Domain
         public string Slug { get; set; }
 
         public virtual ICollection<CourseUserEntity> CourseUsers { get; set; }
-        
+        public virtual ICollection<TestEntity> Tests { get; set; }
     }
 }

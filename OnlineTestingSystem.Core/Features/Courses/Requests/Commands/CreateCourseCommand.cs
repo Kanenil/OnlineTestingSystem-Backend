@@ -7,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineTestingSystem.Application.Features.Courses.Requests.Commands
+namespace OnlineTestingSystem.Application.Features.Courses.Requests.Commands;
+
+public class CreateCourseCommand : IRequest<BaseCommandResponse>
 {
-    public class CreateCourseCommand : IRequest<BaseCommandResponse>
-    {
-        public CourseCreateDTO CourseDTO { get; set; }
-        public string Username { get; set; }
-    }
+    public CourseCreateDTO CourseDTO { get; set; }
+    public string Username { get; set; }
 }
