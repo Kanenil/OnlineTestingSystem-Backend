@@ -17,9 +17,4 @@
     <ProjectReference Include="..\OnlineTestingSystem.Domain\OnlineTestingSystem.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Answer\" />
-    <Folder Include="DTOs\Question\" />
-  </ItemGroup>
-
 </Project>

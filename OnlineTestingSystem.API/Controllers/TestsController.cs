@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OnlineTestingSystem.API.Middleware;
+using OnlineTestingSystem.Application.DTOs.Answer;
+using OnlineTestingSystem.Application.DTOs.Course;
+using OnlineTestingSystem.Application.DTOs.Question;
 using OnlineTestingSystem.Application.DTOs.Test;
 using OnlineTestingSystem.Application.Features.Courses.Requests.Commands;
 using OnlineTestingSystem.Application.Features.Tests.Requests.Commands;
@@ -30,11 +33,39 @@ public class TestsController : ControllerBase
         return Ok(response);
     }
 
-    // PUT api/<TestsController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    // POST api/<TestsController>/question
+    [HttpPost("question")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDeatils))]
+    public async Task<ActionResult<BaseCommandResponse>> CreateQuestion([FromBody] QuestionCreateDTO model)
     {
+        var command = new CreateQuestionCommand { QuestionDTO = model };
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
+
+    // POST api/<TestsController>/answer
+    [HttpPost("answer")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDeatils))]
+    public async Task<ActionResult<BaseCommandResponse>> CreateAnswer([FromBody] AnswerCreateDTO model)
+    {
+        var command = new CreateAnswerCommand { AnswerDTO = model };
+        var response = await _mediator.Send(command);
+        return Ok(response);
+    }
+
+    // PUT api/<TestsController>
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
+    public async Task<ActionResult> Put(TestUpdateDTO test)
+    {
+        var command = new UpdateTestCommand { TestDTO = test };
+        await _mediator.Send(command);
+        return NoContent();
+    }
+
 
     // DELETE api/<TestsController>/5
     [HttpDelete("{id}")]

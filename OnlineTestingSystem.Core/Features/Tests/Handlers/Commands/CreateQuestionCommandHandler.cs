@@ -7,29 +7,29 @@ using OnlineTestingSystem.Domain;
 
 namespace OnlineTestingSystem.Application.Features.Tests.Handlers.Commands;
 
-public class CreateTestCommandHandler : IRequestHandler<CreateTestCommand, BaseCommandResponse>
+public class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, BaseCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateTestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateQuestionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task<BaseCommandResponse> Handle(CreateTestCommand request, CancellationToken cancellationToken)
+    public async Task<BaseCommandResponse> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
     {
         var response = new BaseCommandResponse();
 
-        var test = _mapper.Map<TestEntity>(request.TestDTO);
+        var question = _mapper.Map<QuestionEntity>(request.QuestionDTO);
 
-        test = await _unitOfWork.TestsRepository.AddAsync(test);
+        question = await _unitOfWork.TestsRepository.AddQuestionAsync(question);
         await _unitOfWork.Save();
 
         response.Success = true;
         response.Message = "Creation Successful";
-        response.Id = test.Id;
+        response.Id = question.Id;
 
         return response;
     }

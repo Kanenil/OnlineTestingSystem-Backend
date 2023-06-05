@@ -1,4 +1,5 @@
 ﻿using OnlineTestingSystem.Application.DTOs.Base;
+using OnlineTestingSystem.Application.DTOs.Test;
 using OnlineTestingSystem.Application.DTOs.User;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,6 @@ namespace OnlineTestingSystem.Application.DTOs.Course
         public DateTime DateCreated { get; set; }
         public bool IsOnlyForCodeAccess { get; set; }
         public ICollection<UserRoleDTO> Users { get; set; }
+        public ICollection<TestDTO> Tests { get; set; }
     }
 }

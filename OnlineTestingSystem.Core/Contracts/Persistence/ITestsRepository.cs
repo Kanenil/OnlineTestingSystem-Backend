@@ -9,5 +9,7 @@ namespace OnlineTestingSystem.Application.Contracts.Persistence
 {
     public interface ITestsRepository : IGenericRepository<TestEntity>
     {
+        Task<QuestionEntity> AddQuestionAsync(QuestionEntity entity);
+        Task<AnswerEntity> AddAnswerAsync(AnswerEntity entity);
     }
 }
