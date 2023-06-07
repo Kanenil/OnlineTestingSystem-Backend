@@ -65,9 +65,9 @@ namespace OnlineTestingSystem.Presistence.Repositories
                     .ThenInclude(x => x.Role)
                 .Include(x => x.CourseUsers)
                     .ThenInclude(x => x.User)
-                .Include(x=>x.Tests)
-                    .ThenInclude(x=>x.Questions)
-                        .ThenInclude(x=>x.Answers)
+                .Include(x => x.Tests.Where(x => !x.IsDeleted))
+                    .ThenInclude(x => x.Questions.Where(x => !x.IsDeleted))
+                        .ThenInclude(x => x.Answers.Where(x => !x.IsDeleted))
                 .FirstAsync(x => x.Slug == slug);
         }
 

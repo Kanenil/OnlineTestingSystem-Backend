@@ -77,4 +77,25 @@ public class TestsController : ControllerBase
         await _mediator.Send(command);
         return NoContent();
     }
+
+   
+    [HttpDelete("question/{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
+    public async Task<ActionResult> DeleteQuestion(int id)
+    {
+        var command = new DeleteQuestionCommand { Id = id };
+        await _mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpDelete("answer/{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDeatils))]
+    public async Task<ActionResult> DeleteAnswer(int id)
+    {
+        var command = new DeleteAnswerCommand { Id = id };
+        await _mediator.Send(command);
+        return NoContent();
+    }
 }
